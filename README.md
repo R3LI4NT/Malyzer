@@ -16,6 +16,8 @@
 [![Licencia](https://img.shields.io/badge/Licencia-MIT-22C55E?style=for-the-badge)](#-licencia)
 [![Idioma](https://img.shields.io/badge/i18n-ES%20%2F%20EN-E11D2E?style=for-the-badge)](#-internacionalización)
 
+<p align="center">【 https://r3li4nt.github.io/tools/Malyzer 】</p>
+
 <br/>
 
 **[Características](#-características)** ·
