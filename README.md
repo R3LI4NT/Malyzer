@@ -664,7 +664,6 @@ in the Software without restriction…
 
 <div align="center">
 
-### 👤 Autor
 
 **R3LI4NT**
 
