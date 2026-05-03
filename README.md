@@ -595,8 +595,8 @@ Malyzer está completamente localizado en **español** e **inglés**:
 ```csharp
 private static Dictionary<string, string> DiccionarioPt() => new()
 {
-    ["nav.estatico"] = "Análise estática",
-    ["btn.analizar"] = "Analisar",
+    ["nav.estatico"] = "Análisis estático",
+    ["btn.analizar"] = "Analizar",
     // ... 500+ entradas
 };
 ```
