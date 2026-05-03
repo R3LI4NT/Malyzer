@@ -110,7 +110,7 @@ Cuando llega una muestra desconocida a tu laboratorio, el flujo típico requiere
 | Disassembly para detectar obfuscación | IDA / Ghidra / Binary Ninja | ✅ Capstone integrado en `.text` |
 | Sandbox dinámico | Cuckoo / VMRay | ✅ Sandbox local + ETW kernel tracing |
 | Threat intelligence | VT web + AbuseIPDB + scripts | ✅ VT + AbuseIPDB + OTX integrados |
-| Reportes para colegas | Word/Markdown manual | ✅ PDF estilizado, bilingüe automático |
+| Reportes| Word/Markdown manual | ✅ PDF estilizado, bilingüe automático |
 
 ---
 
