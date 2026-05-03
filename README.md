@@ -383,7 +383,7 @@ Configuración → **Claves de API**. Todas las APIs son opcionales — la app f
 
 ### Idioma
 
-Configuración → **Idioma** → **Español 🇪🇸** o **English 🇬🇧**. Cambia toda la UI + reportes PDF en runtime, sin reiniciar la aplicación.
+Configuración → **Idioma** → **Español** o **English**. Cambia toda la UI + reportes PDF en runtime, sin reiniciar la aplicación.
 
 ### Rutas externas
 
