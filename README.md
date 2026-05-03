@@ -668,13 +668,6 @@ git commit -m "feat: agregar detección de Cobalt Strike beacons"
 git push origin feat/mi-feature
 ```
 
-### Convenciones
-
-- Código en **español** sin comentarios verbosos (la app es en español)
-- Nombres de clases en `PascalCase` (servicios) y `Pagina*.xaml(.cs)` (vistas)
-- Strings nuevos van a `GestorIdioma.cs` con clave `categoria.subcategoria`
-- DataGrids siempre con `IsReadOnly="True"` (TwoWay binding rompe con tipos anónimos)
-
 ---
 
 ## 📄 Licencia
