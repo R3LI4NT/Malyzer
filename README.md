@@ -4,7 +4,7 @@
 
 # Malyzer
 
-### Plataforma de análisis de malware **multi-formato** para Windows
+### Herramienta de análisis de malware **multi-formato** para Windows
 
 *PE · APK · Office · PDF · Scripts · JAR · ELF · Mach-O · todo desde una sola interfaz*
 
