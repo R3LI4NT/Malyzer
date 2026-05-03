@@ -110,7 +110,7 @@ Cuando llega una muestra desconocida a tu laboratorio, el flujo típico requiere
 El **dispatcher** detecta el tipo de archivo por magic bytes y delega al analizador específico. Soporta tanto binarios nativos como formatos contenedores y scripts.
 
 | Formato | Analizador | Detecciones específicas |
-|---------|:-:|------------|------------------------|
+|---------|------------|------------------------|
 | **Windows PE** (EXE/DLL) | `AnalizadorPe` | Imports, secciones, entropía, packers, IOCs, YARA |
 | **Android APK** | `AnalizadorApk` | 28+ permisos peligrosos categorizados, DEX, librerías nativas |
 | **Office OOXML** (DOCX/XLSX/PPTX) | `AnalizadorOfficeOoxml` | Macros VBA, contenido externo, URLs, OLE objects |
