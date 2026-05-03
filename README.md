@@ -638,23 +638,6 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 
 ### v1.1 · Próxima
 
-- [ ] **Triaje LLM** (Anthropic Claude / OpenAI GPT) — identificación de familia, capacidades, recomendaciones IR
-- [ ] **FakeDNS local** para análisis dinámico aislado
-- [ ] **Generador de reportes** BBCode / Markdown / HTML
-- [ ] **Análisis de attachments** de email (.eml / .msg)
-- [ ] **Análisis de certificados Authenticode**
-- [ ] **Borrado seguro** DoD 5220.22-M
-- [ ] **Limpieza de USB** (autorun.inf detection)
-- [ ] **Windows Fix** (recuperación post-infección)
-
-### v2.0 · Futuro
-
-- [ ] **Plugins de terceros** (sistema de extensiones `.dll`)
-- [ ] **Modo cliente/servidor** para equipos
-- [ ] **Integración con MISP / OpenCTI**
-- [ ] **Soporte Linux** (vía AvaloniaUI o MAUI)
-- [ ] **Análisis de imágenes de disco** (E01, raw)
-
 ---
 
 ## 🤝 Contribuir
@@ -731,8 +714,6 @@ in the Software without restriction…
 <br/>
 
 ⭐ **Si Malyzer te resultó útil, considerá darle una estrella en GitHub** ⭐
-
-<sub>Hecho con 🦀 y mucho café en Argentina</sub>
 
 [Volver arriba ↑](#malyzer)
 
