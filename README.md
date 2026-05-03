@@ -33,22 +33,6 @@
 
 Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel y reportes — sobre **11 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf y otras siete utilidades.
 
-```text
-┌──────────────────────────────────────────────────────────┐
-│  malyzer> analyze sample.apk                             │
-│                                                          │
-│  [+] Formato detectado: 📱 Aplicación Android (APK)      │
-│  [+] SHA-256: 8d4f1c2a9b...                              │
-│  [+] Permisos: 28 totales · Peligrosos: 7                │
-│  [!] RECEIVE_SMS              · bypass de 2FA            │
-│  [!] BIND_ACCESSIBILITY_SERVICE · keylogging             │
-│  [!] SYSTEM_ALERT_WINDOW      · overlay banker           │
-│  [!] BIND_DEVICE_ADMIN        · ransomware Android       │
-│  [*] MITRE ATT&CK: T1056.001, T1417, T1437               │
-│  [✗] Veredicto: Alto riesgo · Probablemente malicioso    │
-└──────────────────────────────────────────────────────────┘
-```
-
 > [!IMPORTANT]
 > **Uso defensivo únicamente.** Esta herramienta es para análisis e investigación. No incluye capacidades ofensivas ni se distribuye junto a payloads maliciosos. Trabajá siempre en VMs aisladas con snapshots.
 
