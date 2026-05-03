@@ -1,0 +1,107 @@
+<Page x:Class="Malyzer.Vistas.PaginaUrlScan"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:Malyzer"
+      Background="{StaticResource ColorBase}"
+      Foreground="{StaticResource ColorTexto}">
+    <Grid Margin="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{loc:Loc pag.urlscan.titulo}" Style="{StaticResource TituloPagina}"/>
+            <TextBlock Text="{loc:Loc pag.urlscan.subtitulo}" Style="{StaticResource SubtituloPagina}" Margin="0,0,0,16"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="URL:" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                <TextBox Grid.Column="1" x:Name="campoUrl" VerticalAlignment="Center" FontFamily="Cascadia Mono" KeyDown="CampoUrl_KeyDown"/>
+                <Button Grid.Column="2" x:Name="botonAnalizar" Content="{loc:Loc btn.analizar}" Style="{StaticResource BotonPrimario}" Margin="8,0,0,0" Click="Analizar_Click"/>
+                <Button Grid.Column="3" x:Name="botonExportarPdf" Content="{loc:Loc btn.exportar_pdf}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" IsEnabled="False" Click="ExportarPdf_Click"/>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12" x:Name="cajaResumen" Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="{loc:Loc pdf.veredicto}" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11"/>
+                    <TextBlock x:Name="textoVeredicto" Text="-" FontSize="28" FontWeight="Bold" Foreground="{StaticResource ColorAcento}" Margin="0,4,0,8"/>
+                    <TextBlock x:Name="textoFuentes" Foreground="{StaticResource ColorTextoTenue}" FontSize="11"/>
+                    <TextBlock x:Name="textoCategoria" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" Margin="0,4,0,0"/>
+                </StackPanel>
+                <UniformGrid Grid.Column="1" Columns="2" Rows="2">
+                    <StackPanel Margin="4">
+                        <TextBlock Text="{loc:Loc pag.urlscan.kpi.maliciosos}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                        <TextBlock x:Name="kpiMaliciosos" Text="0" FontSize="20" FontWeight="Bold" Foreground="{StaticResource ColorRojoBrillante}"/>
+                    </StackPanel>
+                    <StackPanel Margin="4">
+                        <TextBlock Text="{loc:Loc pag.urlscan.kpi.sospechosos}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                        <TextBlock x:Name="kpiSospechosos" Text="0" FontSize="20" FontWeight="Bold" Foreground="{StaticResource ColorNaranja}"/>
+                    </StackPanel>
+                    <StackPanel Margin="4">
+                        <TextBlock Text="{loc:Loc pag.urlscan.kpi.limpios}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                        <TextBlock x:Name="kpiLimpios" Text="0" FontSize="20" FontWeight="Bold" Foreground="{StaticResource ColorVerde}"/>
+                    </StackPanel>
+                    <StackPanel Margin="4">
+                        <TextBlock Text="{loc:Loc pag.urlscan.kpi.sin_deteccion}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                        <TextBlock x:Name="kpiSin" Text="0" FontSize="20" FontWeight="Bold" Foreground="{StaticResource ColorTextoTenue}"/>
+                    </StackPanel>
+                </UniformGrid>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="3">
+            <TabItem Header="{loc:Loc pag.urlscan.tab_motores}">
+                <DataGrid x:Name="gridDetecciones" AutoGenerateColumns="False" IsReadOnly="True" Margin="8">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Motor" Binding="{Binding Motor}" Width="200"/>
+                        <DataGridTextColumn Header="{loc:Loc col.estado}" Binding="{Binding Estado}" Width="120"/>
+                        <DataGridTextColumn Header="Resultado" Binding="{Binding Resultado}" Width="*"/>
+                        <DataGridTextColumn Header="{loc:Loc col.categoria}" Binding="{Binding Categoria}" Width="160"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.urlscan.tab_heuristicas}">
+                <ScrollViewer Margin="8" VerticalScrollBarVisibility="Auto">
+                    <StackPanel x:Name="contenedorHeur"/>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.urlscan.tab_info}">
+                <ScrollViewer Margin="8" VerticalScrollBarVisibility="Auto">
+                    <Grid x:Name="gridMeta">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.urlscan.tab_fuentes}">
+                <StackPanel Margin="8">
+                    <TextBlock Text="{loc:Loc pag.urlscan.servicios_consultados}" FontWeight="SemiBold" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,8"/>
+                    <ItemsControl x:Name="listaFuentes"/>
+                    <TextBlock Text="{loc:Loc pag.urlscan.avisos_errores}" FontWeight="SemiBold" Foreground="{StaticResource ColorAcento}" Margin="0,16,0,8"/>
+                    <ItemsControl x:Name="listaErrores"/>
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

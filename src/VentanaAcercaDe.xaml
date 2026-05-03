@@ -1,0 +1,102 @@
+<Window x:Class="Malyzer.VentanaAcercaDe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:Malyzer"
+        Title="Acerca de Malyzer"
+        Icon="/Recursos/logo.ico"
+        Width="540" Height="540"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False">
+    <Border CornerRadius="14" BorderBrush="{StaticResource ColorAcento}" BorderThickness="1">
+        <Border.Background>
+            <RadialGradientBrush GradientOrigin="0.5,0" Center="0.5,0" RadiusX="1.4" RadiusY="1.2">
+                <GradientStop Color="#1A0A0A" Offset="0"/>
+                <GradientStop Color="#080404" Offset="1"/>
+            </RadialGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="Transparent" MouseLeftButtonDown="Barra_MouseLeftButtonDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Width="44" Height="32" Background="Transparent" BorderThickness="0" Foreground="{StaticResource ColorTextoSecundario}" Cursor="Hand" Click="Cerrar_Click">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="b" Background="{TemplateBinding Background}">
+                                    <Path Data="M0,0 L10,10 M10,0 L0,10" Stroke="{StaticResource ColorTexto}" StrokeThickness="1.2" Width="10" Height="10" Stretch="None"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="b" Property="Background" Value="{StaticResource ColorRojo}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,0,32,16">
+                <StackPanel HorizontalAlignment="Center">
+                    <Image Source="/Recursos/logo_256.png" Width="120" Height="120" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,8,0,12">
+                        <Image.Effect>
+                            <DropShadowEffect Color="#E11D2E" BlurRadius="24" ShadowDepth="0" Opacity="0.85"/>
+                        </Image.Effect>
+                    </Image>
+                    <TextBlock Text="MALYZER" Foreground="{StaticResource ColorAcento}" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center">
+                        <TextBlock.Effect>
+                            <DropShadowEffect Color="#E11D2E" BlurRadius="10" ShadowDepth="0" Opacity="0.7"/>
+                        </TextBlock.Effect>
+                    </TextBlock>
+                    <TextBlock Text="MALWARE ANALYZER" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" HorizontalAlignment="Center" Margin="0,2,0,4"/>
+                    <TextBlock Text="{loc:Loc acerca_de.version}" Foreground="{StaticResource ColorTextoSecundario}" FontSize="12" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+
+                    <TextBlock TextWrapping="Wrap" TextAlignment="Center" Foreground="{StaticResource ColorTexto}" FontSize="12" Margin="0,0,0,16" MaxWidth="420">
+                        Plataforma defensiva de análisis estático y dinámico de muestras de malware. Diseñada para investigadores de seguridad, equipos de respuesta a incidentes y entornos de laboratorio aislados.
+                    </TextBlock>
+
+                    <Border Style="{StaticResource EstiloTarjeta}" Padding="14,10" Width="420" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc acerca_de.tecnologias}" Foreground="{StaticResource ColorAcento}" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,4"/>
+                            <TextBlock Text=".NET 8 · WPF · SQLite · PeNet · dnlib · YARA · WMI" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource EstiloTarjeta}" Padding="14,10" Width="420" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock Text="Inteligencia" Foreground="{StaticResource ColorAcento}" FontWeight="SemiBold" FontSize="11" Margin="0,0,0,4"/>
+                            <TextBlock Text="VirusTotal · AbuseIPDB · AlienVault OTX" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+                    <Border BorderBrush="{StaticResource ColorRojoOscuro}" BorderThickness="1" CornerRadius="8" Padding="14,10" Width="420" Margin="0,4,0,0" Background="#1A0606">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.acerca.advertencia_titulo}" Foreground="{StaticResource ColorRojoBrillante}" FontWeight="Bold" FontSize="11" Margin="0,0,0,4"/>
+                            <TextBlock Text="{loc:Loc pag.acerca.advertencia_texto}" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="2" BorderBrush="{StaticResource ColorBorde}" BorderThickness="0,1,0,0" Padding="20,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Build defensivo · uso responsable" Foreground="{StaticResource ColorTextoTenue}" FontSize="10" VerticalAlignment="Center"/>
+                    <Button Grid.Column="1" Content="Cerrar" Style="{StaticResource BotonPrimario}" Click="Cerrar_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

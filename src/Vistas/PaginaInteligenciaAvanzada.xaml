@@ -1,0 +1,205 @@
+<Page x:Class="Malyzer.Vistas.PaginaInteligenciaAvanzada"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:Malyzer"
+      Background="{StaticResource ColorBase}"
+      Foreground="{StaticResource ColorTexto}">
+    <Grid Margin="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{loc:Loc pag.adv.titulo}" Style="{StaticResource TituloPagina}"/>
+            <TextBlock Text="{loc:Loc pag.adv.subtitulo}" Style="{StaticResource SubtituloPagina}" Margin="0,0,0,16"/>
+        </StackPanel>
+
+        <TabControl Grid.Row="1">
+
+            <!-- DIFF -->
+            <TabItem Header="{loc:Loc pag.adv.tab_diff}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.adv.diff_help}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="A:" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" x:Name="campoDiffA" IsReadOnly="True"/>
+                                <Button Grid.Column="2" Content="{loc:Loc btn.examinar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="ExaminarA_Click"/>
+                            </Grid>
+                            <Grid Margin="0,8,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="B:" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center"/>
+                                <TextBox Grid.Column="1" x:Name="campoDiffB" IsReadOnly="True"/>
+                                <Button Grid.Column="2" Content="{loc:Loc btn.examinar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="ExaminarB_Click"/>
+                            </Grid>
+                            <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+                                <Button Content="{loc:Loc pag.adv.diff_comparar}" Style="{StaticResource BotonPrimario}" Click="Comparar_Click"/>
+                                <Button Content="{loc:Loc pag.adv.diff_buscar_similares}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="BuscarSimilares_Click"/>
+                                <Button Content="{loc:Loc pag.adv.diff_indexar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="IndexarSsdeep_Click"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="contenedorDiff"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- MITRE -->
+            <TabItem Header="{loc:Loc pag.adv.tab_mitre}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.adv.mitre_help}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="campoMitre" IsReadOnly="True"/>
+                                <Button Grid.Column="1" Content="{loc:Loc btn.examinar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="ExaminarMitre_Click"/>
+                                <Button Grid.Column="2" Content="{loc:Loc pag.adv.mitre_mapear}" Style="{StaticResource BotonPrimario}" Margin="8,0,0,0" Click="MapearMitre_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="contenedorMitre"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- DECODER -->
+            <TabItem Header="{loc:Loc pag.adv.tab_decoder}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.adv.decoder_help}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="campoDecoder" IsReadOnly="True"/>
+                                <Button Grid.Column="1" Content="{loc:Loc btn.examinar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="ExaminarDecoder_Click"/>
+                                <Button Grid.Column="2" Content="{loc:Loc pag.adv.decoder_decodificar}" Style="{StaticResource BotonPrimario}" Margin="8,0,0,0" Click="Decodificar_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="contenedorDecoder"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+            <!-- ETW -->
+            <TabItem Header="{loc:Loc pag.adv.tab_etw}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.adv.etw_help}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="PID:" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBox x:Name="campoPidEtw" Width="100" VerticalAlignment="Center"/>
+                                <Button x:Name="botonEtwIniciar" Content="{loc:Loc btn.iniciar}" Style="{StaticResource BotonPrimario}" Margin="8,0,0,0" Click="EtwIniciar_Click"/>
+                                <Button x:Name="botonEtwDetener" Content="{loc:Loc btn.detener}" Style="{StaticResource BotonPeligro}" Margin="8,0,0,0" IsEnabled="False" Click="EtwDetener_Click"/>
+                                <TextBlock x:Name="textoEtwEstado" Foreground="{StaticResource ColorTextoSecundario}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <UniformGrid Columns="5" Rows="1">
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{loc:Loc pag.adv.etw_total}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                                <TextBlock x:Name="kpiEtwTotal" Text="0" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColorAcento}"/>
+                            </StackPanel>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{loc:Loc pag.adv.etw_archivos}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                                <TextBlock x:Name="kpiEtwArchivos" Text="0" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColorAmarillo}"/>
+                            </StackPanel>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{loc:Loc pag.adv.etw_registro}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                                <TextBlock x:Name="kpiEtwRegistro" Text="0" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColorTeal}"/>
+                            </StackPanel>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{loc:Loc pag.adv.etw_red}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                                <TextBlock x:Name="kpiEtwRed" Text="0" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColorRosa}"/>
+                            </StackPanel>
+                            <StackPanel Margin="4">
+                                <TextBlock Text="{loc:Loc pag.adv.etw_procesos}" FontSize="10" Foreground="{StaticResource ColorTextoSecundario}"/>
+                                <TextBlock x:Name="kpiEtwProc" Text="0" FontSize="18" FontWeight="Bold" Foreground="{StaticResource ColorVerde}"/>
+                            </StackPanel>
+                        </UniformGrid>
+                    </Border>
+                    <DataGrid Grid.Row="2" x:Name="gridEtw" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Loc pdf.col_hora}" Binding="{Binding FechaTexto}" Width="100"/>
+                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="80"/>
+                            <DataGridTextColumn Header="{loc:Loc col.categoria}" Binding="{Binding Categoria}" Width="100"/>
+                            <DataGridTextColumn Header="{loc:Loc col.tipo}" Binding="{Binding Tipo}" Width="120"/>
+                            <DataGridTextColumn Header="{loc:Loc col.linea_comando}" Binding="{Binding Detalle}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <!-- MULTI-FORMATO -->
+            <TabItem Header="{loc:Loc pag.adv.tab_multi}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="{loc:Loc pag.adv.multi_help}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8" TextWrapping="Wrap"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" x:Name="campoMulti" IsReadOnly="True"/>
+                                <Button Grid.Column="1" Content="{loc:Loc btn.examinar}" Style="{StaticResource BotonSecundario}" Margin="8,0,0,0" Click="ExaminarMulti_Click"/>
+                                <Button Grid.Column="2" x:Name="botonAnalizarMulti" Content="{loc:Loc pag.adv.multi_analizar}" Style="{StaticResource BotonPrimario}" Margin="8,0,0,0" Click="AnalizarMulti_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <StackPanel x:Name="contenedorMulti"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Page>

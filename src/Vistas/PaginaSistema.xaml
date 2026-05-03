@@ -1,0 +1,222 @@
+<Page x:Class="Malyzer.Vistas.PaginaSistema"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:Malyzer"
+      Background="{StaticResource ColorBase}"
+      Foreground="{StaticResource ColorTexto}">
+    <Grid Margin="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="{loc:Loc pag.sistema.titulo}" Style="{StaticResource TituloPagina}"/>
+                <TextBlock Text="{loc:Loc pag.sistema.subtitulo}" Style="{StaticResource SubtituloPagina}" Margin="0,0,0,16"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,8,0,0">
+                <Button Content="{loc:Loc btn.exportar_pdf}" Style="{StaticResource BotonSecundario}" Margin="0,0,8,0" Click="ExportarPdf_Click"/>
+                <Button Content="{loc:Loc btn.refrescar_todo}" Style="{StaticResource BotonPrimario}" Click="RefrescarTodo_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="{loc:Loc pag.sistema.tab_unidades}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="resumenUnidades" Foreground="{StaticResource ColorTextoSecundario}" Margin="0,0,0,8"/>
+                    <DataGrid Grid.Row="1" x:Name="gridUnidades" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Letra" Binding="{Binding Letra}" Width="80"/>
+                            <DataGridTextColumn Header="{loc:Loc col.tipo}" Binding="{Binding Tipo}" Width="120"/>
+                            <DataGridTextColumn Header="Etiqueta" Binding="{Binding Etiqueta}" Width="180"/>
+                            <DataGridTextColumn Header="FS" Binding="{Binding SistemaArchivos}" Width="80"/>
+                            <DataGridTextColumn Header="Total" Binding="{Binding TamanoTotalTexto}" Width="120"/>
+                            <DataGridTextColumn Header="Libre" Binding="{Binding TamanoLibreTexto}" Width="120"/>
+                            <DataGridTextColumn Header="Uso %" Binding="{Binding PorcentajeUso}" Width="80"/>
+                            <DataGridTextColumn Header="{loc:Loc col.estado}" Binding="{Binding Listo}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_proteccion}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="resumenProteccion" Foreground="{StaticResource ColorTextoSecundario}" Margin="0,0,0,8"/>
+                    <DataGrid Grid.Row="1" x:Name="gridProteccion" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Loc col.tipo}" Binding="{Binding Tipo}" Width="120"/>
+                            <DataGridTextColumn Header="Producto" Binding="{Binding Nombre}" Width="280"/>
+                            <DataGridTextColumn Header="{loc:Loc col.estado}" Binding="{Binding EstadoTexto}" Width="220"/>
+                            <DataGridTextColumn Header="Bruto" Binding="{Binding EstadoBruto}" Width="100"/>
+                            <DataGridTextColumn Header="Ejecutable" Binding="{Binding RutaEjecutable}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_inicio_carpetas}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="resumenInicio" Foreground="{StaticResource ColorTextoSecundario}" Margin="0,0,0,8"/>
+                    <DataGrid Grid.Row="1" x:Name="gridInicio" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.eliminar_entrada}" Click="EliminarInicioCarpeta_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.abrir_ubicacion}" Click="AbrirUbicacionInicio_Click"/>
+                                <MenuItem Header="Copiar comando" Click="CopiarComando_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{loc:Loc col.nombre}" Binding="{Binding Nombre}" Width="240"/>
+                            <DataGridTextColumn Header="Origen" Binding="{Binding Origen}" Width="280"/>
+                            <DataGridTextColumn Header="{loc:Loc lbl.comando_ruta}" Binding="{Binding Comando}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_inicio_registro}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="resumenRegistro" Foreground="{StaticResource ColorTextoSecundario}" Margin="0,0,0,8"/>
+                    <DataGrid Grid.Row="1" x:Name="gridRegistro" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.eliminar_registro}" Click="EliminarRegistro_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.copiar_nombre}" Click="CopiarNombreRegistro_Click"/>
+                                <MenuItem Header="Copiar comando" Click="CopiarComandoRegistro_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Clave" Binding="{Binding Origen}" Width="160"/>
+                            <DataGridTextColumn Header="{loc:Loc col.nombre}" Binding="{Binding Nombre}" Width="220"/>
+                            <DataGridTextColumn Header="Comando" Binding="{Binding Comando}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_procesos}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="filtroProcesos" Width="320" HorizontalAlignment="Left" TextChanged="FiltroProcesos_Changed"/>
+                        <TextBlock Grid.Column="1" x:Name="resumenProcesos" Foreground="{StaticResource ColorTextoSecundario}" VerticalAlignment="Center"/>
+                    </Grid>
+                    <DataGrid Grid.Row="1" x:Name="gridProcesos" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.matar_proceso}" Click="MatarProceso_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.suspender}" Click="SuspenderProceso_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.reanudar}" Click="ReanudarProceso_Click"/>
+                                <Separator/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.abrir_ubicacion_ejec}" Click="AbrirUbicacionProceso_Click"/>
+                                <MenuItem Header="Copiar PID" Click="CopiarPid_Click"/>
+                                <MenuItem Header="{loc:Loc btn.copiar_ruta}" Click="CopiarRutaProceso_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.volcar}" Click="VolcarMemoriaProceso_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="PID" Binding="{Binding Pid}" Width="80"/>
+                            <DataGridTextColumn Header="{loc:Loc col.nombre}" Binding="{Binding Nombre}" Width="200"/>
+                            <DataGridTextColumn Header="{loc:Loc col.memoria}" Binding="{Binding MemoriaTexto}" Width="100"/>
+                            <DataGridTextColumn Header="Hilos" Binding="{Binding Hilos}" Width="60"/>
+                            <DataGridTextColumn Header="Inicio" Binding="{Binding InicioTexto}" Width="160"/>
+                            <DataGridTextColumn Header="{loc:Loc lbl.ruta}" Binding="{Binding Ruta}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_hosts}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="resumenHosts" Foreground="{StaticResource ColorTextoSecundario}" Margin="0,0,0,8"/>
+                    <DataGrid Grid.Row="1" x:Name="gridHosts" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{loc:Loc pag.sistema.menu.comentar}" Click="ComentarHost_Click"/>
+                                    <MenuItem Header="{loc:Loc pag.sistema.menu.eliminar_entrada}" Click="EliminarHost_Click"/>
+                                    <MenuItem Header="Copiar IP" Click="CopiarIpHost_Click"/>
+                                    <MenuItem Header="Copiar host" Click="CopiarNombreHost_Click"/>
+                                    <Separator/>
+                                    <MenuItem Header="{loc:Loc btn.abrir_archivo_hosts}" Click="AbrirArchivoHosts_Click"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" Binding="{Binding Linea}" Width="50"/>
+                            <DataGridTextColumn Header="IP" Binding="{Binding Ip}" Width="160"/>
+                            <DataGridTextColumn Header="Host" Binding="{Binding Host}" Width="*"/>
+                            <DataGridTextColumn Header="{loc:Loc col.estado}" Binding="{Binding EstadoTexto}" Width="100"/>
+                            <DataGridCheckBoxColumn Header="{loc:Loc col.sospechosa}" Binding="{Binding Sospechoso}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.sistema.tab_conexiones}">
+                <Grid Margin="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" x:Name="filtroConex" Width="320" HorizontalAlignment="Left" TextChanged="FiltroConex_Changed"/>
+                        <TextBlock Grid.Column="1" x:Name="resumenConex" Foreground="{StaticResource ColorTextoSecundario}" VerticalAlignment="Center"/>
+                    </Grid>
+                    <DataGrid Grid.Row="1" x:Name="gridConex" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.cerrar_conexion}" Click="CerrarConexion_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.matar_dueno}" Click="MatarDuenoConexion_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.copiar_remoto}" Click="CopiarRemoto_Click"/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.copiar_local}" Click="CopiarLocal_Click"/>
+                                <Separator/>
+                                <MenuItem Header="{loc:Loc pag.sistema.menu.bloquear_ip}" Click="BloquearIp_Click"/>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Proto" Binding="{Binding Protocolo}" Width="80"/>
+                            <DataGridTextColumn Header="Local" Binding="{Binding Local}" Width="240"/>
+                            <DataGridTextColumn Header="Remoto" Binding="{Binding Remoto}" Width="240"/>
+                            <DataGridTextColumn Header="{loc:Loc col.estado}" Binding="{Binding Estado}" Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>
