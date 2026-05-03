@@ -1,195 +1,257 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/R3LI4NT/Malyzer/refs/heads/main/img/logo.png?token=GHSAT0AAAAAADWDC2V5K3V64WMZ6IFLSLHS2PXMXSA" alt="Malyzer" width="180"/>
+<img src="https://raw.githubusercontent.com/R3LI4NT/Malyzer/refs/heads/main/img/logo.png?token=GHSAT0AAAAAADWDC2V5YPRIYZQZXYDURSNA2PXVGTQ" alt="Malyzer" width="180"/>
 
 # Malyzer
 
-**Plataforma avanzada de análisis de malware para Windows**
+### Plataforma de análisis de malware **multi-formato** para Windows
 
-Análisis estático y dinámico, MITRE ATT&CK mapping, ETW tracing, decoder Capstone y triaje con LLM en una sola interfaz.
+*PE · APK · Office · PDF · Scripts · JAR · ELF · Mach-O · todo desde una sola interfaz*
 
-[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square&logo=.net)](https://dotnet.microsoft.com/)
-[![WPF](https://img.shields.io/badge/UI-WPF-0078D4?style=flat-square)](https://learn.microsoft.com/dotnet/desktop/wpf/)
-[![Plataforma](https://img.shields.io/badge/Plataforma-Windows%2010%2F11-0078D4?style=flat-square&logo=windows)](https://www.microsoft.com/windows/)
-[![Idioma](https://img.shields.io/badge/Idioma-ES%20%2F%20EN-E11D2E?style=flat-square)](#-internacionalización)
-[![Licencia](https://img.shields.io/badge/Licencia-MIT-22C55E?style=flat-square)](#-licencia)
+<br/>
 
-[Características](#-características) ·
-[Capturas](#-capturas) ·
-[Instalación](#-instalación) ·
-[Uso](#-uso) ·
-[Stack técnico](#-stack-técnico) ·
-[Contribuir](#-contribuir)
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/)
+[![WPF](https://img.shields.io/badge/UI-WPF-0078D4?style=for-the-badge&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/wpf/)
+[![Windows](https://img.shields.io/badge/Windows-10%20%2F%2011-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
+[![Licencia](https://img.shields.io/badge/Licencia-MIT-22C55E?style=for-the-badge)](#-licencia)
+[![Idioma](https://img.shields.io/badge/i18n-ES%20%2F%20EN-E11D2E?style=for-the-badge)](#-internacionalización)
+
+<br/>
+
+**[Características](#-características)** ·
+**[Capturas](#-capturas)** ·
+**[Instalación](#-instalación)** ·
+**[Uso](#-uso)** ·
+**[Stack](#%EF%B8%8F-stack-técnico)** ·
+**[Roadmap](#%EF%B8%8F-roadmap)**
 
 </div>
 
 ---
 
-## 📋 Tabla de contenidos
+## ⚡ TL;DR
 
-- [Sobre Malyzer](#-sobre-malyzer)
-- [Características](#-características)
-- [Capturas](#-capturas)
-- [Instalación](#-instalación)
-- [Uso](#-uso)
-- [Configuración](#-configuración)
-- [Stack técnico](#-stack-técnico)
-- [Estructura del proyecto](#-estructura-del-proyecto)
-- [Aviso sobre antivirus](#-aviso-sobre-antivirus)
-- [Internacionalización](#-internacionalización)
-- [Roadmap](#-roadmap)
-- [Contribuir](#-contribuir)
-- [Licencia](#-licencia)
-- [Autor](#-autor)
+Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel y reportes — sobre **11 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf y otras siete utilidades.
+
+```text
+┌──────────────────────────────────────────────────────────┐
+│  malyzer> analyze sample.apk                             │
+│                                                          │
+│  [+] Formato detectado: 📱 Aplicación Android (APK)      │
+│  [+] SHA-256: 8d4f1c2a9b...                              │
+│  [+] Permisos: 28 totales · Peligrosos: 7                │
+│  [!] RECEIVE_SMS              · bypass de 2FA            │
+│  [!] BIND_ACCESSIBILITY_SERVICE · keylogging             │
+│  [!] SYSTEM_ALERT_WINDOW      · overlay banker           │
+│  [!] BIND_DEVICE_ADMIN        · ransomware Android       │
+│  [*] MITRE ATT&CK: T1056.001, T1417, T1437               │
+│  [✗] Veredicto: Alto riesgo · Probablemente malicioso    │
+└──────────────────────────────────────────────────────────┘
+```
+
+> [!IMPORTANT]
+> **Uso defensivo únicamente.** Esta herramienta es para análisis e investigación. No incluye capacidades ofensivas ni se distribuye junto a payloads maliciosos. Trabajá siempre en VMs aisladas con snapshots.
 
 ---
 
-## 🎯 Sobre Malyzer
+## 📊 De un vistazo
 
-**Malyzer** es una plataforma defensiva de análisis de malware con interfaz gráfica moderna, escrita en C# WPF para .NET 8. Diseñada para analistas de malware, threat hunters y profesionales de respuesta a incidentes que necesitan una herramienta integral para examinar muestras y hosts comprometidos sin saltar entre 10 utilidades distintas.
+| | |
+|---:|:---|
+| **Formatos soportados** | **11** — PE, APK, OOXML, OLE, PDF, scripts, JAR, ELF, Mach-O, ZIP, binarios |
+| **Módulos UI** | **13** páginas funcionales con sidebar y navegación |
+| **Servicios** | **21+** servicios autocontenidos en `Servicios/` |
+| **Técnicas MITRE** | **26** sobre 9 tácticas, mapeo automático |
+| **Reglas YARA** | **10** built-in + soporte de reglas externas `.yar` |
+| **Strings i18n** | **1.000+** (ES/EN, cambio en runtime sin reiniciar) |
+| **Stack** | .NET 8 · WPF · WindowChrome moderno · 100% Windows nativo |
 
-> ⚠️ **Uso defensivo únicamente.** Esta herramienta es para análisis e investigación de seguridad. No incluye capacidades ofensivas ni se distribuye junto a payloads maliciosos.
+---
 
-### ¿Por qué Malyzer?
+## 📋 Tabla de contenidos
 
-| Necesidad | Solución típica | Malyzer |
-|-----------|-----------------|---------|
-| Análisis estático de PE | PEStudio + CFF Explorer | ✅ Integrado |
-| Reglas YARA | yara.exe + scripts | ✅ Motor embebido + 9 reglas built-in |
-| Mapeo MITRE ATT&CK | Manual contra cheatsheet | ✅ Automático sobre IOCs/imports/YARA |
-| Disassembly para detectar obfuscación | IDA / Ghidra / Binary Ninja | ✅ Capstone integrado |
-| Sandbox dinámico | Cuckoo / VMRay / manual | ✅ Sandbox local + ETW tracing |
-| Triage rápido de muestras | Análisis manual de 30+ minutos | ✅ LLM en 5 segundos (Claude/GPT) |
-| Threat intelligence | VirusTotal web + scripts | ✅ VT + AbuseIPDB + OTX integrados |
-| Reportes para colegas | Word/Markdown manual | ✅ PDF estilizado bilingüe |
+- [Por qué Malyzer](#-por-qué-malyzer)
+- [Características](#-características)
+  - [Análisis multi-formato](#-análisis-multi-formato)
+  - [Análisis estático profundo](#-análisis-estático-profundo-pe)
+  - [Análisis dinámico con ETW](#-análisis-dinámico-con-etw)
+  - [Inteligencia avanzada](#-inteligencia-avanzada)
+  - [Threat intelligence](#-threat-intelligence)
+  - [Visualización y gestión](#-visualización-y-gestión)
+- [Capturas](#-capturas)
+- [Instalación](#-instalación)
+- [Uso](#-uso)
+- [Configuración](#%EF%B8%8F-configuración)
+- [Arquitectura](#%EF%B8%8F-arquitectura)
+- [Stack técnico](#%EF%B8%8F-stack-técnico)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Aviso sobre antivirus](#%EF%B8%8F-aviso-sobre-antivirus)
+- [Internacionalización](#-internacionalización)
+- [Roadmap](#%EF%B8%8F-roadmap)
+- [Contribuir](#-contribuir)
+- [Licencia](#-licencia)
+
+---
+
+## 🎯 Por qué Malyzer
+
+Cuando llega una muestra desconocida a tu laboratorio, el flujo típico requiere abrir entre 5 y 10 herramientas distintas. Malyzer condensa ese flujo en una sola UI con triage automático y profundización guiada.
+
+| Necesidad | Workflow tradicional | Con Malyzer |
+|-----------|---------------------|-------------|
+| Identificar el formato del binario | `file`, magic bytes manuales | ✅ Auto-detección por magic bytes (11 formatos) |
+| Análisis estático de PE | PEStudio + CFF Explorer + Detect It Easy | ✅ Integrado con scoring |
+| Análisis de APK Android | JADX + apktool + análisis manual de permisos | ✅ Categorización automática de permisos peligrosos |
+| Análisis de Office maldoc | oletools + olevba + manual | ✅ OOXML + OLE + macros + URLs externos |
+| Análisis de PDF malicioso | peepdf + pdfid | ✅ JavaScript, OpenAction, embedded files |
+| Análisis de scripts | Lectura manual + deobfuscación | ✅ PowerShell/VBS/JS/Python con detección de IOCs |
+| Reglas YARA | `yara.exe` + scripts | ✅ Motor embebido + 10 reglas built-in |
+| Mapeo MITRE ATT&CK | Cheatsheet + manual | ✅ Automático sobre IOCs/imports/YARA |
+| Disassembly para detectar obfuscación | IDA / Ghidra / Binary Ninja | ✅ Capstone integrado en `.text` |
+| Sandbox dinámico | Cuckoo / VMRay | ✅ Sandbox local + ETW kernel tracing |
+| Threat intelligence | VT web + AbuseIPDB + scripts | ✅ VT + AbuseIPDB + OTX integrados |
+| Reportes para colegas | Word/Markdown manual | ✅ PDF estilizado, bilingüe automático |
 
 ---
 
 ## ✨ Características
 
-Malyzer integra **14 módulos especializados** organizados en 4 grupos:
+### 🗂️ Análisis multi-formato
 
-### 🔍 Análisis
+El **dispatcher** detecta el tipo de archivo por magic bytes y delega al analizador específico. Soporta tanto binarios nativos como formatos contenedores y scripts.
 
-#### Análisis estático
-Inspección profunda de ejecutables PE/COFF basada en `PeNet 4.0.4`:
-- Cabecera DOS/PE, secciones (con entropía individual y características)
-- Tabla de imports completa con conteo de funciones por DLL
-- Extracción de IOCs: URLs, IPs, dominios, claves de registro, rutas de archivo
-- Detección de packers (UPX, custom packing por entropía)
-- Compilación timestamp, arquitectura, base de imagen, punto de entrada
-- Hashes: MD5, SHA-1, SHA-256, **SSDeep** (CTPH puro C#)
-- Veredicto automático: **Limpio / Bajo riesgo / Medio / Alto** con score 0-100
+| Formato | Icono | Analizador | Detecciones específicas |
+|---------|:-:|------------|------------------------|
+| **Windows PE** (EXE/DLL) | 🖥️ | `AnalizadorPe` | Imports, secciones, entropía, packers, IOCs, YARA |
+| **Android APK** | 📱 | `AnalizadorApk` | 28+ permisos peligrosos categorizados, DEX, librerías nativas |
+| **Office OOXML** (DOCX/XLSX/PPTX) | 📄 | `AnalizadorOfficeOoxml` | Macros VBA, contenido externo, URLs, OLE objects |
+| **Office OLE** (DOC/XLS/PPT) | 📄 | `AnalizadorOfficeOle` | Streams VBA, equation editor, embedded objects |
+| **PDF** | 📕 | `AnalizadorPdf` | `/JavaScript`, `/OpenAction`, embedded files, URIs |
+| **Scripts** | 📜 | `AnalizadorScript` | PowerShell, VBS, JS, Batch, Bash, Python, Perl, Ruby, Lua |
+| **Java JAR** | ☕ | `AnalizadorJar` | Manifest, classes, imports sospechosos, resources |
+| **Linux ELF** | 🐧 | `AnalizadorPe` (genérico) | Headers, secciones, strings, IOCs |
+| **macOS Mach-O** | 🍎 | Genérico | Strings, IOCs, hashes |
+| **ZIP genérico** | 📦 | Genérico | Inspección de contenidos |
+| **Binario desconocido** | 📄 | `AnalizadorGenerico` | Hashes, entropía, strings, IOCs por regex |
 
-#### Análisis dinámico
-Sandbox local con monitoreo en tiempo real:
-- Procesos hijos, archivos creados/modificados/eliminados
-- Cambios en registro
-- Conexiones de red iniciadas
-- Recomendado ejecutar en VM aislada con snapshots
+> [!TIP]
+> Cada analizador alimenta un modelo común `ResultadoMultiFormato` con `Indicadores` (severidad alta/media/baja), `Strings`, `Metadata` y un `Veredicto` calculado: **Limpio · Bajo riesgo · Sospechoso · Probablemente malicioso**.
 
-#### Herramientas Pro
-- **Memory dump** vía `MiniDumpWriteDump` (Windows DbgHelp)
-- **Deobfuscación** de bytes hex pegados (XOR brute-force)
-- **Extracción de configuración** desde strings y secciones
-- **Emulación parcial** de funciones criptográficas comunes
+### 🔍 Análisis estático profundo (PE)
+
+Inspección exhaustiva basada en `PeNet 4.0.4` y `dnlib 4.4.0`:
+
+- 📦 **Cabecera DOS/PE** completa (machine type, characteristics, subsystem, timestamp)
+- 📊 **Secciones** con entropía individual y características
+- 🔗 **Tabla de imports** completa con conteo de funciones por DLL
+- 🎯 **IOCs**: URLs, IPs, dominios, claves de registro, rutas de archivo, mutex
+- 🔐 **Detección de packers** (UPX, ASPack, custom packing por entropía)
+- 🧮 **Hashes**: MD5, SHA-1, SHA-256, **SSDeep** (CTPH puro C#)
+- ⚖️ **Veredicto automático** con score 0-100
+- 🏗️ **Análisis .NET** con `dnlib`: ensamblados managed, types, methods
+- 🚨 **Detección de funciones API sospechosas**: `VirtualAllocEx`, `WriteProcessMemory`, `CreateRemoteThread`, etc.
+
+### 📡 Análisis dinámico con ETW
+
+Reemplaza el clásico `FileSystemWatcher` con **Event Tracing for Windows** vía `Microsoft.Diagnostics.Tracing.TraceEvent 3.1.10`. Captura eventos a nivel kernel en tiempo real:
+
+| Categoría | Eventos capturados |
+|-----------|-------------------|
+| **Procesos** | `ProcessStart` / `Stop`, command lines, parent PID |
+| **Archivos** | `FileIOCreate` / `Write` / `Delete` con tamaños |
+| **Registro** | `RegistryCreate` / `SetValue` / `DeleteValue` |
+| **Red** | `TcpIpConnect` / `Send`, `UdpIpSend` con bytes |
+| **DLLs** | `ImageLoad` con base address |
+
+> [!NOTE]
+> **Auto-tracking de procesos hijos.** Si la muestra spawnea un nuevo proceso (típico en droppers/loaders), Malyzer lo añade automáticamente al trace sin intervención manual. Requiere ejecutar como administrador.
 
 ### 🧠 Inteligencia avanzada
 
-#### MITRE ATT&CK Mapping
-Detección automática de **22+ técnicas** desde imports, YARA hits, IOCs y comportamiento dinámico:
+#### MITRE ATT&CK Mapping — 26 técnicas
 
-| Táctica | Técnicas detectadas |
-|---------|---------------------|
-| **Execution** | T1059.001 (PowerShell), T1059.003 (cmd), T1106 (Native API) |
-| **Persistence** | T1547.001 (Run keys), T1547.009 (Shortcut) |
-| **Defense Evasion** | T1027 (Obfuscation), T1027.002 (Packing), T1055/T1055.012 (Injection), T1112 (Modify Registry), T1140 (Deobfuscate), T1497 (Sandbox Evasion), T1622 (Debugger Evasion) |
-| **Credential Access** | T1003.001 (LSASS), T1555.003 (Browsers) |
-| **Discovery** | T1083 (Files), T1057 (Process), T1082 (System Info), T1033 (User) |
-| **Collection** | T1056.001 (Keylogging), T1113 (Screenshot) |
-| **Command and Control** | T1071.001 (Web), T1095 (Raw sockets), T1105 (Tool transfer) |
-| **Impact** | T1486 (Encryption), T1490 (Inhibit Recovery) |
+Detección automática desde imports, YARA hits, IOCs y comportamiento dinámico:
+
+<table>
+<tr><th>Táctica</th><th>Técnicas detectadas</th></tr>
+<tr><td><b>Execution</b></td><td><code>T1059.001</code> PowerShell · <code>T1059.003</code> cmd · <code>T1106</code> Native API</td></tr>
+<tr><td><b>Persistence</b></td><td><code>T1547.001</code> Run keys · <code>T1547.009</code> Shortcut</td></tr>
+<tr><td><b>Defense Evasion</b></td><td><code>T1027</code> Obfuscation · <code>T1027.002</code> Packing · <code>T1055</code> / <code>T1055.012</code> Injection · <code>T1112</code> Modify Registry · <code>T1140</code> Deobfuscate · <code>T1497</code> Sandbox Evasion · <code>T1622</code> Debugger Evasion</td></tr>
+<tr><td><b>Credential Access</b></td><td><code>T1003.001</code> LSASS · <code>T1555.003</code> Browsers</td></tr>
+<tr><td><b>Discovery</b></td><td><code>T1083</code> Files · <code>T1057</code> Process · <code>T1082</code> System Info · <code>T1033</code> User</td></tr>
+<tr><td><b>Collection</b></td><td><code>T1056.001</code> Keylogging · <code>T1113</code> Screenshot</td></tr>
+<tr><td><b>Command and Control</b></td><td><code>T1071.001</code> Web Protocols · <code>T1095</code> Non-App Layer · <code>T1105</code> Tool transfer</td></tr>
+<tr><td><b>Impact</b></td><td><code>T1486</code> Encryption · <code>T1490</code> Inhibit Recovery</td></tr>
+</table>
 
 Cada técnica se agrupa por táctica con link directo a `attack.mitre.org`.
 
 #### Diff de muestras + SSDeep
-Compara dos muestras combinando 5 dimensiones:
-- **SSDeep similarity** (40% del score) — implementación CTPH pura C#
-- **DLLs comunes** (20%) · **Funciones importadas** (15%) · **YARA en común** (15%) · **Secciones PE** (10%)
 
-Devuelve score 0-100 y conclusión: *idénticas / muy similares / similares / relacionadas / diferentes*. Incluye:
-- **Buscar similares en repo** — SSDeep contra todas las muestras catalogadas
-- **Indexar SSDeep en repo** — backfill para muestras existentes
+Compara dos muestras combinando 5 dimensiones con score ponderado:
+
+```
+SSDeep similarity (40%) + DLLs comunes (20%) + Funciones (15%) + YARA (15%) + Secciones (10%)
+                                          ↓
+                                   Score 0-100
+                ┌──────────────────────┴───────────────────────┐
+                ↓                                              ↓
+     idénticas / muy similares / similares / relacionadas / diferentes
+```
+
+Incluye **buscar similares en repo** (SSDeep contra todas las muestras catalogadas) e **indexar SSDeep en repo** (backfill para muestras existentes).
 
 #### Decoder con Capstone
-Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0`:
-- **Stack strings**: secuencias `mov [rsp+N], imm` que arman texto en stack
-- **Loops XOR**: `xor reg, imm; loop/jne` patrones de descifrado runtime
-- **API hashing**: `ror`/`rol` seguido de `add`/`xor` (resolución por hash)
-- **Calls indirectas**: `call [reg]` (típico tras resolver APIs)
-- Auto-detección x86/x64 desde el header PE
 
-#### ETW Dynamic Tracing
-Reemplaza `FileSystemWatcher` con **Event Tracing for Windows** vía `Microsoft.Diagnostics.Tracing.TraceEvent 3.1.10`:
-- Procesos: `ProcessStart`/`Stop`, command lines, parent PID
-- Archivos: `FileIOCreate`/`Write`/`Delete` con tamaños
-- Registro: `RegistryCreate`/`SetValue`/`DeleteValue`
-- Red: `TcpIpConnect`/`Send`, `UdpIpSend` con bytes
-- DLLs: `ImageLoad` con base address
-- **Auto-tracking de procesos hijos** (si malware lanza un nuevo proceso, lo trackea automáticamente)
-- KPIs en vivo (eventos / archivos / registro / red / procesos)
-- Requiere ejecutar como administrador
+Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con auto-detección de arquitectura:
 
-#### Triaje LLM
-Análisis automático con **Anthropic Claude** o **OpenAI GPT**:
-- Identificación de familia (Emotet, RAT genérico, Loader desconocido…)
-- Confianza (baja/media/alta) y nivel de riesgo (crítico/alto/medio/bajo)
-- Lista de capacidades observadas
-- Razonamiento técnico
-- Recomendaciones de respuesta a incidentes
-- Detecta automáticamente el idioma de la app (ES/EN)
-- Modelos por defecto: `claude-haiku-4-5` (Anthropic) o `gpt-4o-mini` (OpenAI)
+- 🪜 **Stack strings** — secuencias `mov [rsp+N], imm` que arman texto en stack
+- 🔄 **Loops XOR** — `xor reg, imm; loop/jne` patrones de descifrado runtime
+- #️⃣ **API hashing** — `ror`/`rol` seguido de `add`/`xor` (resolución por hash)
+- ↩️ **Calls indirectas** — `call [reg]` (típico tras resolver APIs por hash)
 
-### 📊 Threat Intelligence
+### 🌐 Threat intelligence
 
-- **Threat Intel** — VirusTotal v3, AbuseIPDB, AlienVault OTX para hashes/IPs/dominios/URLs (con auto-detección del tipo de IOC)
-- **URL Scan** — VirusTotal + URLhaus + PhishTank + heurísticas locales (TLDs sospechosos, palabras de phishing, IPs literales, URL-encoding excesivo)
-- **Netsniff + GeoIP** — Captura de tráfico con `SharpPcap 6.3.0`. Click derecho sobre cualquier paquete → **Inspeccionar IP** abre modal con GeoIP (`ipinfo.io`) + WHOIS RDAP (`rdap.org`) + accesos directos a VirusTotal/AbuseIPDB/Shodan
-- **Clasificador ML** — k-NN classifier con extracción de features (entropía, imports, secciones, strings) y agrupamiento automático del repositorio
+| Servicio | Cobertura | Tier gratuito |
+|----------|-----------|---------------|
+| **VirusTotal v3** | Hashes, dominios, URLs · 90+ AV engines | 4 req/min, 500/día |
+| **AbuseIPDB v2** | Reputación de IPs | 1.000 req/día |
+| **AlienVault OTX** | Hashes y dominios contra pulsos | sin límite práctico |
+| **URLhaus** | URLs maliciosas conocidas | público |
+| **PhishTank** | URLs de phishing reportadas | público |
+| **Heurísticas locales** | TLDs sospechosos, palabras de phishing, IPs literales, URL-encoding excesivo | offline |
 
-### 🖥️ Sistema y monitoreo
+**Auto-detección del tipo de IOC** (hash MD5/SHA-1/SHA-256, IP, dominio o URL) y consultas en lote.
 
-- **Inspector de sistema** — Procesos, conexiones TCP/UDP, autorun (registro + carpetas), archivo hosts, software de protección, unidades de disco. Context menus completos (suspender proceso, bloquear IP en firewall, comentar host malicioso, etc.)
-- **Visualización** — 7 modos: mapa de entropía por sección, distribución de imports por DLL, grafo de IOCs, histograma de bytes, mapa de strings sospechosas, layout PE, árbol de procesos del sistema
+### 📊 Visualización y gestión
 
-### 🗂️ Gestión
-
-- **Repositorio de muestras** — SQLite local con metadata (familia, etiquetas, notas, riesgo, hashes, SSDeep, técnicas MITRE)
-- **Exportación PDF** estilizada con `QuestPDF Community`: análisis estático, sistema, muestras, netsniff, URL scan. **Bilingüe automático** según idioma de la app
+- **🎨 Visualización (7 modos)** — mapa de entropía por sección, distribución de imports, grafo de IOCs, histograma de bytes, mapa de strings, layout PE, árbol de procesos del sistema
+- **🌐 Netsniff + GeoIP** — Captura con `SharpPcap 6.3.0`. Click derecho sobre cualquier paquete → **Inspeccionar IP** abre modal con GeoIP (`ipinfo.io`) + WHOIS RDAP (`rdap.org`) + accesos directos a VirusTotal/AbuseIPDB/Shodan
+- **🖥️ Inspector de sistema** — Procesos, conexiones TCP/UDP, autorun (registro + carpetas), archivo hosts, software de protección, unidades. Context menus para suspender procesos, bloquear IPs en firewall, comentar hosts maliciosos, etc.
+- **🤖 Clasificador ML** — k-NN con extracción de features (entropía, imports, secciones, strings) y agrupamiento automático del repositorio
+- **🗃️ Repositorio de muestras** — SQLite local con metadata: familia, etiquetas, notas, riesgo, hashes, SSDeep, técnicas MITRE
+- **📄 Exportación PDF** — Templates estilizados con `QuestPDF` para análisis estático, sistema, muestras, netsniff y URL scan. **Bilingüe automático** según idioma activo
 
 ---
 
 ## 📸 Capturas
 
-> Sustituí estas referencias por capturas reales en `docs/screenshots/` cuando subas las imágenes.
+> Reemplazá estas referencias por capturas reales en `docs/screenshots/` cuando subas las imágenes.
 
-### Análisis estático
-![Análisis estático](docs/screenshots/static.png)
-
-### MITRE ATT&CK Mapping
-![MITRE](docs/screenshots/mitre.png)
-
-### Decoder Capstone
-![Decoder](docs/screenshots/decoder.png)
-
-### ETW Dynamic Tracing
-![ETW](docs/screenshots/etw.png)
-
-### Triaje LLM
-![LLM](docs/screenshots/llm.png)
-
-### Netsniff con GeoIP/WHOIS
-![Netsniff](docs/screenshots/netsniff.png)
+<table>
+<tr>
+<td width="50%"><b>Análisis estático</b><br/><img src="docs/screenshots/static.png" alt="Estático"/></td>
+<td width="50%"><b>MITRE ATT&CK Mapping</b><br/><img src="docs/screenshots/mitre.png" alt="MITRE"/></td>
+</tr>
+<tr>
+<td width="50%"><b>Decoder Capstone</b><br/><img src="docs/screenshots/decoder.png" alt="Decoder"/></td>
+<td width="50%"><b>ETW Dynamic Tracing</b><br/><img src="docs/screenshots/etw.png" alt="ETW"/></td>
+</tr>
+<tr>
+<td width="50%"><b>APK Multi-formato</b><br/><img src="docs/screenshots/apk.png" alt="APK"/></td>
+<td width="50%"><b>Netsniff con GeoIP/WHOIS</b><br/><img src="docs/screenshots/netsniff.png" alt="Netsniff"/></td>
+</tr>
+</table>
 
 ---
 
@@ -197,16 +259,16 @@ Análisis automático con **Anthropic Claude** o **OpenAI GPT**:
 
 ### Requisitos previos
 
-- **Windows 10/11** (64 bits)
-- **.NET 8 Runtime** (Desktop Runtime para WPF) — [descargar](https://dotnet.microsoft.com/download/dotnet/8.0)
-- **Npcap** (para Netsniff) — [descargar](https://npcap.com/) · marca *"WinPcap API-compatible Mode"* en la instalación
-- **Permisos de administrador** (para ETW, dump de memoria, modificación de hosts/firewall)
+- 🪟 **Windows 10/11** (64 bits)
+- ⚙️ **.NET 8 Runtime** (Desktop Runtime para WPF) — [descargar](https://dotnet.microsoft.com/download/dotnet/8.0)
+- 📡 **Npcap** (para Netsniff) — [descargar](https://npcap.com/) · marcar *"WinPcap API-compatible Mode"* en la instalación
+- 🛡️ **Permisos de administrador** (para ETW, dump de memoria, modificación de hosts/firewall)
 
-### Opción 1: Release pre-compilada
+### Opción 1 · Release pre-compilada (recomendada)
 
 Descargá el `.zip` de la última release desde [Releases](https://github.com/R3LI4NT/Malyzer/releases), descomprimí y ejecutá `Malyzer.exe`.
 
-### Opción 2: Compilar desde código
+### Opción 2 · Compilar desde código
 
 ```powershell
 # Cloná el repo
@@ -227,7 +289,8 @@ O usá el script `compilar.bat` incluido para una compilación rápida.
 
 ## 📖 Uso
 
-### Análisis básico de un ejecutable
+<details>
+<summary><b>🔍 Análisis básico de un ejecutable</b></summary>
 
 1. Abrí Malyzer
 2. **Análisis estático** → **Cargar archivo** → seleccioná el `.exe` o `.dll`
@@ -238,58 +301,130 @@ O usá el script `compilar.bat` incluido para una compilación rápida.
    - Imports sospechosos (resaltados)
    - IOCs extraídos (URLs, IPs, dominios)
    - Coincidencias YARA
-5. Exportá un PDF si necesitás compartirlo
+5. Exportá un PDF si necesitás compartirlo con el equipo
 
-### Triaje rápido con LLM
+</details>
 
-1. Configurá tu API key (Configuración → Triaje LLM → Anthropic o OpenAI)
-2. Inteligencia avanzada → tab **Triaje LLM** → seleccioná el archivo
-3. Click en **Triar con LLM**
-4. En ~3-5 segundos obtenés: familia, capacidades, nivel de riesgo y recomendaciones de IR
+<details>
+<summary><b>📱 Análisis de APK Android</b></summary>
 
-### Tracing dinámico con ETW
+1. **Análisis estático** → **Cargar archivo** → seleccioná el `.apk`
+2. Malyzer detecta el formato automáticamente y despacha a `AnalizadorApk`
+3. Revisá:
+   - **Permisos peligrosos** categorizados (alta/media/baja)
+   - Inventario de archivos `.dex` (clases compiladas)
+   - Librerías nativas `.so` (posible código C/C++)
+   - APKs anidados (dropper)
+   - Certificado de firma + IOCs en strings
 
-1. Ejecutá Malyzer **como administrador**
+Ejemplo de detecciones críticas:
+- `RECEIVE_SMS` → bypass de 2FA
+- `BIND_ACCESSIBILITY_SERVICE` → keylogging
+- `SYSTEM_ALERT_WINDOW` → overlay banker
+- `BIND_DEVICE_ADMIN` → ransomware Android
+- `REQUEST_INSTALL_PACKAGES` → dropper de APKs adicionales
+
+</details>
+
+<details>
+<summary><b>📡 Tracing dinámico con ETW</b></summary>
+
+1. Ejecutá Malyzer **como administrador** (ETW lo requiere)
 2. Lanzá tu sample en una VM aislada y obtené su PID
 3. Inteligencia avanzada → tab **ETW dinámico** → ingresá el PID → **Iniciar**
-4. Observá en vivo: archivos creados, claves de registro modificadas, conexiones de red, procesos hijos
+4. Observá en vivo:
+   - Archivos creados, modificados o eliminados
+   - Claves de registro modificadas
+   - Conexiones de red iniciadas
+   - Procesos hijos (auto-trackeados)
+   - DLLs cargadas en memoria
 
-### Comparar dos variantes
+</details>
+
+<details>
+<summary><b>🔬 Comparar dos variantes de la misma familia</b></summary>
 
 1. Inteligencia avanzada → tab **Diff de muestras**
 2. Cargá A y B → **Comparar A vs B**
 3. Ves el score combinado (SSDeep + DLLs + funciones + YARA + secciones)
-4. Para buscar similares en tu repo: **Indexar SSDeep en repo** una vez, después **Buscar similares en repo** te devuelve top-10
+4. Para buscar similares en tu repo:
+   - **Indexar SSDeep en repo** (una sola vez)
+   - **Buscar similares en repo** te devuelve el top-10 ordenado por similitud
 
-### Inspeccionar tráfico de red
+</details>
+
+<details>
+<summary><b>🌐 Inspeccionar tráfico de red</b></summary>
 
 1. Netsniff → seleccioná adaptador → **Iniciar captura**
 2. Click derecho sobre cualquier paquete → **Inspeccionar IP (GeoIP / WHOIS)**
-3. Modal con geolocalización, ASN, organización, contactos abuse + accesos directos a VirusTotal, AbuseIPDB, Shodan
+3. Modal con:
+   - Geolocalización (país, ciudad, ASN, organización)
+   - Contactos abuse del rango
+   - Accesos directos a **VirusTotal**, **AbuseIPDB**, **Shodan**
+
+</details>
 
 ---
 
 ## ⚙️ Configuración
 
-Las preferencias se guardan en `%APPDATA%\Malyzer\config.json`.
+Las preferencias se guardan en `%LOCALAPPDATA%\Malyzer\config.json`.
 
-### Claves de API (Configuración → Claves de API)
+### Claves de API
 
-| Servicio | Tier gratuito | Para qué se usa |
-|----------|---------------|-----------------|
-| **VirusTotal** | 4 req/min, 500/día | Hashes, IPs, dominios, URLs en Threat Intel y URL Scan |
-| **AbuseIPDB** | 1.000 req/día | Reputación de IPs |
-| **AlienVault OTX** | sin límite práctico | Hashes y dominios contra pulsos de la comunidad |
-| **Anthropic Claude** | con cuenta pago | Triaje LLM (modelo `claude-haiku-4-5`) |
-| **OpenAI GPT** | con cuenta pago | Triaje LLM (modelo `gpt-4o-mini`) |
+Configuración → **Claves de API**. Todas las APIs son opcionales — la app funciona sin ellas usando solo análisis local.
+
+| Servicio | Para qué se usa | Costo |
+|----------|-----------------|-------|
+| **VirusTotal** | Hashes, IPs, dominios, URLs en Threat Intel y URL Scan | Gratis (4 req/min, 500/día) |
+| **AbuseIPDB** | Reputación de IPs | Gratis (1.000 req/día) |
+| **AlienVault OTX** | Hashes y dominios contra pulsos de la comunidad | Gratis sin límite práctico |
 
 ### Idioma
 
-Configuración → **Idioma** → **Español** o **English** con bandera. Cambia toda la UI + reportes PDF en runtime, sin reiniciar.
+Configuración → **Idioma** → **Español 🇪🇸** o **English 🇬🇧**. Cambia toda la UI + reportes PDF en runtime, sin reiniciar la aplicación.
 
 ### Rutas externas
 
-Si tenés Ghidra, Radare2 o reglas YARA externas, podés apuntarlos desde Configuración → Rutas externas.
+Si tenés Ghidra, Radare2 o reglas YARA externas, podés apuntarlos desde Configuración → **Rutas externas** para integrarlos al flujo.
+
+---
+
+## 🏗️ Arquitectura
+
+```mermaid
+flowchart LR
+    A[Archivo de entrada] --> B{AnalizadorMultiFormato}
+    B -->|Magic bytes| C[Detectar formato]
+
+    C -->|MZ| D[AnalizadorPe]
+    C -->|PK + AndroidManifest| E[AnalizadorApk]
+    C -->|PK + word/xl/ppt| F[AnalizadorOfficeOoxml]
+    C -->|D0CF11E0| G[AnalizadorOfficeOle]
+    C -->|%PDF| H[AnalizadorPdf]
+    C -->|.ps1/.vbs/.js/.py| I[AnalizadorScript]
+    C -->|PK + JAR| J[AnalizadorJar]
+    C -->|otros| K[AnalizadorGenerico]
+
+    D --> L[ResultadoMultiFormato]
+    E --> L
+    F --> L
+    G --> L
+    H --> L
+    I --> L
+    J --> L
+    K --> L
+
+    L --> M[MotorYara]
+    L --> N[MapeadorMitre]
+    L --> O[IntelAmenazas]
+    L --> P[ExportadorPdf]
+
+    M & N & O & P --> Q[UI · WPF]
+```
+
+Diseño modular con servicios independientes que pueden testearse y reemplazarse de manera aislada. Cada feature es un servicio que vive en `Servicios/` y se consume desde una página WPF en `Vistas/`.
 
 ---
 
@@ -304,7 +439,8 @@ Si tenés Ghidra, Radare2 o reglas YARA externas, podés apuntarlos desde Config
 
 | Paquete | Versión | Uso |
 |---------|---------|-----|
-| `PeNet` | 4.0.4 | Parsing PE/COFF |
+| `PeNet` | 4.0.4 | Parsing PE/COFF en C# puro |
+| `dnlib` | 4.4.0 | Análisis de ensamblados .NET (managed) |
 | `Gee.External.Capstone` | 2.3.0 | Disassembly multi-arquitectura |
 | `Microsoft.Diagnostics.Tracing.TraceEvent` | 3.1.10 | ETW kernel events |
 | `SharpPcap` + `PacketDotNet` | 6.3.0 / 1.4.7 | Captura de tráfico L2/L3 |
@@ -316,7 +452,7 @@ Si tenés Ghidra, Radare2 o reglas YARA externas, podés apuntarlos desde Config
 ### Diseño
 
 - **Paleta**: `#0A0606` base, `#E11D2E` acento, `#F4ECEC` texto
-- **Tipografía**: sistema (Segoe UI) para UI, Cascadia Mono para hashes/código
+- **Tipografía**: Segoe UI para UI, Cascadia Mono para hashes/código
 - **Iconos**: Material Design Icons como Geometry XAML
 - **i18n**: `LocExtension` markup `{loc:Loc clave}` con gestor singleton `INotifyPropertyChanged`
 - **Tema oscuro**: paleta consistente en toda la app (DataGrids, ContextMenus, MessageBoxes, ScrollBars con templates custom)
@@ -324,6 +460,9 @@ Si tenés Ghidra, Radare2 o reglas YARA externas, podés apuntarlos desde Config
 ---
 
 ## 📂 Estructura del proyecto
+
+<details>
+<summary>Click para expandir el árbol completo</summary>
 
 ```
 Malyzer/
@@ -334,34 +473,46 @@ Malyzer/
 ├── LocExtension.cs                  # Markup extension para i18n
 ├── Malyzer.csproj                   # Proyecto .NET 8 WPF
 │
-├── Servicios/                       # Lógica de negocio (14 servicios)
-│   ├── AnalizadorEstatico.cs        # Análisis PE
+├── Servicios/                       # Lógica de negocio (21+ servicios)
+│   │
+│   ├── # Análisis multi-formato
+│   ├── AnalizadorMultiFormato.cs    # Dispatcher por magic bytes
+│   ├── AnalizadorPorFormato.cs      # PE, OOXML, OLE, PDF, Script, JAR, genérico
+│   ├── AnalizadorApk.cs             # Análisis APK + permisos peligrosos
+│   ├── AnalizadorEstatico.cs        # Análisis PE detallado
 │   ├── AnalizadorDinamico.cs        # Sandbox local
-│   ├── MotorYara.cs                 # YARA con 9 reglas built-in
-│   ├── MapeadorMitre.cs             # Detección 22+ técnicas
+│   │
+│   ├── # Inteligencia
+│   ├── MotorYara.cs                 # YARA con 10 reglas built-in
+│   ├── MapeadorMitre.cs             # Detección 26 técnicas
 │   ├── DiferenciadorMuestras.cs     # Diff multi-dimensión
 │   ├── SsDeep.cs                    # CTPH puro C#
 │   ├── DecodificadorCadenas.cs      # Capstone disasm
 │   ├── TrazadorEtw.cs               # ETW kernel tracing
-│   ├── TriajeLlm.cs                 # Anthropic/OpenAI
-│   ├── EscanerUrl.cs                # VT + URLhaus + PhishTank
+│   ├── ClasificadorML.cs            # k-NN classifier
+│   │
+│   ├── # Threat intelligence
 │   ├── IntelAmenazas.cs             # VT/AbuseIPDB/OTX
-│   ├── Netsniff.cs                  # SharpPcap wrapper
+│   ├── EscanerUrl.cs                # VT + URLhaus + PhishTank
 │   ├── InspectorIp.cs               # GeoIP + RDAP
+│   │
+│   ├── # Sistema y red
 │   ├── InspectorSistema.cs          # Procesos/conexiones/hosts/registro
+│   ├── Netsniff.cs                  # SharpPcap wrapper
 │   ├── HerramientasPro.cs           # Memory dump, deobfuscación
-│   ├── ClasificadorML.cs            # k-NN
+│   │
+│   ├── # Gestión y soporte
 │   ├── GestorMuestras.cs            # SQLite repo
 │   ├── GestorConfiguracion.cs       # config.json
-│   ├── GestorIdioma.cs              # i18n singleton
+│   ├── GestorIdioma.cs              # i18n singleton (1.000+ strings)
 │   └── ExportadorPdf.cs             # QuestPDF templates
 │
-├── Vistas/                          # Páginas WPF (12 páginas)
+├── Vistas/                          # Páginas WPF (13 páginas)
 │   ├── PaginaInicio.xaml(.cs)
 │   ├── PaginaAnalisisEstatico.xaml(.cs)
 │   ├── PaginaAnalisisDinamico.xaml(.cs)
 │   ├── PaginaInteligencia.xaml(.cs)
-│   ├── PaginaInteligenciaAvanzada.xaml(.cs)   # Diff/MITRE/Decoder/ETW/LLM
+│   ├── PaginaInteligenciaAvanzada.xaml(.cs)   # Diff/MITRE/Decoder/ETW
 │   ├── PaginaMuestras.xaml(.cs)
 │   ├── PaginaClasificacion.xaml(.cs)
 │   ├── PaginaVisualizacion.xaml(.cs)
@@ -377,7 +528,7 @@ Malyzer/
 │   └── Controles.xaml               # Templates de DataGrid/ContextMenu/etc
 │
 ├── Modelos/
-│   └── Modelos.cs                   # POCOs (Muestra, ResultadoAnalisis...)
+│   └── Modelos.cs                   # POCOs (Muestra, ResultadoAnalisis…)
 │
 ├── Recursos/                        # Estáticos
 │   ├── logo.png / logo_256.png / logo_64.png
@@ -389,39 +540,57 @@ Malyzer/
 └── README.md                        # Este archivo
 ```
 
+</details>
+
+### Almacenamiento
+
+Los datos de runtime se guardan en `%LOCALAPPDATA%\Malyzer\`:
+
+| Ruta | Contenido |
+|------|-----------|
+| `malyzer.db` | Base SQLite con muestras, análisis e indicadores |
+| `muestras/` | Archivos binarios almacenados como `<sha256>.bin` |
+| `reportes/` | Reportes exportados (PDF, JSON, TXT) |
+| `yara/` | Reglas YARA personalizadas |
+| `config.json` | Configuración persistente |
+
 ---
 
 ## 🛡️ Aviso sobre antivirus
 
 Malyzer dispara las **mismas heurísticas** que el malware real porque usa muchas de las mismas APIs:
 
-- P/Invoke a `OpenThread` / `SuspendThread` (suspender procesos)
-- `MiniDumpWriteDump` (dump de memoria — clásico de credential stealers)
-- `netsh advfirewall` automatizado
-- Captura raw de tráfico (`SharpPcap`)
-- WMI queries de enumeración del sistema
-- Lectura de hosts file y modificación del registro
+- 🔧 P/Invoke a `OpenThread` / `SuspendThread` (suspender procesos)
+- 💾 `MiniDumpWriteDump` (dump de memoria — clásico de credential stealers)
+- 🔥 `netsh advfirewall` automatizado
+- 📡 Captura raw de tráfico (`SharpPcap`)
+- 🔍 WMI queries de enumeración del sistema
+- 📝 Lectura de hosts file y modificación del registro
 
 **Esto es esperado y le pasa también a:**
 
-- Process Hacker, x64dbg, OllyDbg
-- PE-bear, CFF Explorer, PEStudio
-- Sysinternals Suite
-- Mimikatz (legítimo en pentesting)
-- NetCat, PsExec
+| Herramienta | Uso legítimo |
+|-------------|--------------|
+| Process Hacker, x64dbg, OllyDbg | Debugging |
+| PE-bear, CFF Explorer, PEStudio | Análisis estático |
+| Sysinternals Suite | Administración Windows |
+| Mimikatz | Pentesting / red team legítimo |
+| NetCat, PsExec | Administración remota |
 
 ### Soluciones (de menos a más profesional)
 
-1. **Excluir el directorio de Defender** (recomendado para uso personal):
-   ```powershell
-   Add-MpPreference -ExclusionPath "C:\ruta\a\Malyzer"
-   ```
+**1. Excluir el directorio de Defender** (recomendado para uso personal):
 
-2. **Reportar como falso positivo** a Microsoft: [microsoft.com/wdsi/filesubmission](https://www.microsoft.com/wdsi/filesubmission) (suelen blanquearlo en 1-2 días)
+```powershell
+Add-MpPreference -ExclusionPath "C:\ruta\a\Malyzer"
+```
 
-3. **Firmar el `.exe`** con certificado Authenticode (cert estándar ~€200/año, EV ~€400/año) — reduce muchísimo los falsos positivos
+**2. Reportar como falso positivo** a Microsoft: [microsoft.com/wdsi/filesubmission](https://www.microsoft.com/wdsi/filesubmission). Suelen blanquearlo en 1-2 días.
 
-> ⚠️ **Importante**: trabajá siempre con muestras reales en **VMs aisladas** con snapshots y red restringida. Nunca ejecutes muestras en sistemas de producción ni en tu host principal.
+**3. Firmar el `.exe`** con certificado Authenticode (cert estándar ~€200/año, EV ~€400/año). Reduce muchísimo los falsos positivos.
+
+> [!WARNING]
+> Trabajá siempre con muestras reales en **VMs aisladas** con snapshots y red restringida. Nunca ejecutes muestras en sistemas de producción ni en tu host principal.
 
 ---
 
@@ -429,11 +598,11 @@ Malyzer dispara las **mismas heurísticas** que el malware real porque usa mucha
 
 Malyzer está completamente localizado en **español** e **inglés**:
 
-- **600+ strings** traducidas en `Servicios/GestorIdioma.cs`
-- **UI completa**: sidebar, páginas, ContextMenus, DataGrid headers, MessageBoxes, SaveFileDialog titles
-- **PDFs** se generan en el idioma activo (veredictos, headers, tablas, footer)
-- **Reglas YARA** con descripciones bilingües
-- Cambio en runtime sin reiniciar (botón en Configuración con banderas 🇪🇸 / 🇬🇧)
+- 📝 **1.000+ strings** traducidas en `Servicios/GestorIdioma.cs`
+- 🎨 **UI completa**: sidebar, páginas, ContextMenus, DataGrid headers, MessageBoxes, SaveFileDialog titles
+- 📄 **PDFs** se generan en el idioma activo (veredictos, headers, tablas, footer)
+- 🛡️ **Reglas YARA** con descripciones bilingües
+- 🔄 Cambio en runtime sin reiniciar (botón en Configuración con banderas 🇪🇸 / 🇬🇧)
 
 ¿Querés agregar otro idioma? Editá `GestorIdioma.cs` y agregá un nuevo diccionario:
 
@@ -442,7 +611,7 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 {
     ["nav.estatico"] = "Análise estática",
     ["btn.analizar"] = "Analisar",
-    // ... 600+ entradas
+    // ... 500+ entradas
 };
 ```
 
@@ -450,35 +619,41 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 
 ## 🗺️ Roadmap
 
-### v1.0 — Lanzamiento inicial ✅
-- [x] Análisis estático completo (PE, YARA, IOCs, packer)
+### v1.0 · Lanzamiento inicial ✅
+
+- [x] Análisis multi-formato (11 tipos: PE, APK, Office, PDF, scripts, JAR…)
+- [x] Análisis estático completo de PE (PeNet + dnlib)
+- [x] Análisis APK con detección de 28+ permisos peligrosos
 - [x] Sandbox local básico
-- [x] Threat Intel (VT/AbuseIPDB/OTX)
-- [x] URL Scan (VT/URLhaus/PhishTank/heurísticas)
-- [x] Netsniff + GeoIP/WHOIS
+- [x] Threat Intel (VT / AbuseIPDB / OTX)
+- [x] URL Scan (VT / URLhaus / PhishTank / heurísticas)
+- [x] Netsniff + GeoIP / WHOIS
 - [x] Inspector de sistema con context menus
 - [x] Repositorio SQLite con SSDeep
-- [x] Diff de muestras
-- [x] MITRE ATT&CK mapping (22 técnicas)
-- [x] Decoder Capstone
-- [x] ETW dynamic tracing
-- [x] Triaje LLM (Anthropic + OpenAI)
+- [x] Diff de muestras multi-dimensión
+- [x] MITRE ATT&CK mapping (26 técnicas)
+- [x] Decoder Capstone (stack strings, XOR, API hashing)
+- [x] ETW dynamic tracing con auto-tracking de hijos
 - [x] Bilingüe ES/EN runtime
 
-### v1.1 — Próxima
-- [ ] FakeDNS local para análisis dinámico
-- [ ] Generador de reportes BBCode/Markdown/HTML
-- [ ] Análisis de attachments de email (.eml/.msg)
-- [ ] Análisis de certificados Authenticode
-- [ ] Borrado seguro DoD 5220.22-M
-- [ ] Limpieza de USB (autorun.inf detection)
-- [ ] Windows Fix (recuperación post-infección)
+### v1.1 · Próxima
 
-### v2.0 — Futuro
-- [ ] Plugins de terceros (sistema de extensiones)
-- [ ] Modo cliente/servidor para equipos
-- [ ] Integración con MISP / OpenCTI
-- [ ] Soporte Linux (vía AvaloniaUI o MAUI)
+- [ ] **Triaje LLM** (Anthropic Claude / OpenAI GPT) — identificación de familia, capacidades, recomendaciones IR
+- [ ] **FakeDNS local** para análisis dinámico aislado
+- [ ] **Generador de reportes** BBCode / Markdown / HTML
+- [ ] **Análisis de attachments** de email (.eml / .msg)
+- [ ] **Análisis de certificados Authenticode**
+- [ ] **Borrado seguro** DoD 5220.22-M
+- [ ] **Limpieza de USB** (autorun.inf detection)
+- [ ] **Windows Fix** (recuperación post-infección)
+
+### v2.0 · Futuro
+
+- [ ] **Plugins de terceros** (sistema de extensiones `.dll`)
+- [ ] **Modo cliente/servidor** para equipos
+- [ ] **Integración con MISP / OpenCTI**
+- [ ] **Soporte Linux** (vía AvaloniaUI o MAUI)
+- [ ] **Análisis de imágenes de disco** (E01, raw)
 
 ---
 
@@ -486,11 +661,12 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 
 ¡Las contribuciones son bienvenidas! Algunas ideas:
 
-- **Más reglas YARA** en `Servicios/MotorYara.cs`
-- **Nuevas técnicas MITRE** en `Servicios/MapeadorMitre.cs`
-- **Traducciones** a otros idiomas
-- **Fixes de bugs** y mejoras de UX
-- **Nuevas features** del roadmap
+- 🛡️ **Más reglas YARA** en `Servicios/MotorYara.cs`
+- 🎯 **Nuevas técnicas MITRE** en `Servicios/MapeadorMitre.cs`
+- 📄 **Soporte de nuevos formatos** en `AnalizadorPorFormato.cs`
+- 🌍 **Traducciones** a otros idiomas
+- 🐛 **Fixes de bugs** y mejoras de UX
+- ✨ **Nuevas features** del roadmap
 
 ### Workflow
 
@@ -511,7 +687,7 @@ git push origin feat/mi-feature
 
 ### Convenciones
 
-- Código en **español** sin comentarios (la app es en español)
+- Código en **español** sin comentarios verbosos (la app es en español)
 - Nombres de clases en `PascalCase` (servicios) y `Pagina*.xaml(.cs)` (vistas)
 - Strings nuevos van a `GestorIdioma.cs` con clave `categoria.subcategoria`
 - DataGrids siempre con `IsReadOnly="True"` (TwoWay binding rompe con tipos anónimos)
@@ -520,44 +696,43 @@ git push origin feat/mi-feature
 
 ## 📄 Licencia
 
-Distribuido bajo licencia **MIT**. Ver `LICENSE` para más detalles.
+Distribuido bajo licencia **MIT**. Ver [`LICENSE`](LICENSE) para más detalles.
 
 ```
-MIT License
-
-Copyright (c) 2026 R3LI4NT
+MIT License · Copyright (c) 2026 R3LI4NT
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction...
+in the Software without restriction…
 ```
 
 ### Componentes de terceros
 
-- **PeNet** (MIT) — Stefan Hausotte
-- **Gee.External.Capstone** (BSD-3-Clause) — Ahmed Garhy
-- **TraceEvent** (MIT) — Microsoft
-- **SharpPcap** (LGPL-2.1) — Tamir Gal & contributors
-- **QuestPDF** (Community License — gratis para apps con <$1M/año revenue)
-- **Newtonsoft.Json** (MIT) — James Newton-King
+| Componente | Licencia | Autor |
+|------------|----------|-------|
+| PeNet | MIT | Stefan Hausotte |
+| dnlib | MIT | 0xd4d |
+| Gee.External.Capstone | BSD-3-Clause | Ahmed Garhy |
+| TraceEvent | MIT | Microsoft |
+| SharpPcap | LGPL-2.1 | Tamir Gal & contributors |
+| QuestPDF | Community License (gratis < $1M revenue/año) | QuestPDF team |
+| Newtonsoft.Json | MIT | James Newton-King |
 
 ---
 
-## 👤 Autor
-
 <div align="center">
+
+### 👤 Autor
 
 **R3LI4NT**
 
-[![GitHub](https://img.shields.io/badge/GitHub-@R3LI4NT-181717?style=for-the-badge&logo=github)](https://github.com/R3LI4NT)
+[![GitHub](https://img.shields.io/badge/GitHub-@R3LI4NT-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/R3LI4NT)
 
-</div>
-
----
-
-<div align="center">
+<br/>
 
 ⭐ **Si Malyzer te resultó útil, considerá darle una estrella en GitHub** ⭐
+
+<sub>Hecho con 🦀 y mucho café en Argentina</sub>
 
 [Volver arriba ↑](#malyzer)
 
