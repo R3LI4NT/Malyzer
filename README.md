@@ -664,9 +664,6 @@ in the Software without restriction…
 
 <div align="center">
 
-
-**R3LI4NT**
-
 [![GitHub](https://img.shields.io/badge/GitHub-@R3LI4NT-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/R3LI4NT)
 
 <br/>
