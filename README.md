@@ -35,6 +35,10 @@
 
 Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel y reportes — sobre **11 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf y otras siete utilidades.
 
+<p align="center">
+  <img width="1919" height="1029" alt="malyzer" src="https://github.com/user-attachments/assets/8d15920d-7fd5-430b-9b7e-bba89417083a" />
+</p>
+
 > [!IMPORTANT]
 > **Uso defensivo únicamente.** Esta herramienta es para análisis e investigación. No incluye capacidades ofensivas ni se distribuye junto a payloads maliciosos. Trabajá siempre en VMs aisladas con snapshots.
 
@@ -64,7 +68,6 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
   - [Inteligencia avanzada](#-inteligencia-avanzada)
   - [Threat intelligence](#-threat-intelligence)
   - [Visualización y gestión](#-visualización-y-gestión)
-- [Capturas](#-capturas)
 - [Instalación](#-instalación)
 - [Uso](#-uso)
 - [Configuración](#%EF%B8%8F-configuración)
@@ -217,25 +220,6 @@ Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con
 - **🤖 Clasificador ML** — k-NN con extracción de features (entropía, imports, secciones, strings) y agrupamiento automático del repositorio
 - **🗃️ Repositorio de muestras** — SQLite local con metadata: familia, etiquetas, notas, riesgo, hashes, SSDeep, técnicas MITRE
 - **📄 Exportación PDF** — Templates estilizados con `QuestPDF` para análisis estático, sistema, muestras, netsniff y URL scan. **Bilingüe automático** según idioma activo
-
----
-
-## 📸 Capturas
-
-<table>
-<tr>
-<td width="50%"><b>Análisis estático</b><br/><img src="docs/screenshots/static.png" alt="Estático"/></td>
-<td width="50%"><b>MITRE ATT&CK Mapping</b><br/><img src="docs/screenshots/mitre.png" alt="MITRE"/></td>
-</tr>
-<tr>
-<td width="50%"><b>Decoder Capstone</b><br/><img src="docs/screenshots/decoder.png" alt="Decoder"/></td>
-<td width="50%"><b>ETW Dynamic Tracing</b><br/><img src="docs/screenshots/etw.png" alt="ETW"/></td>
-</tr>
-<tr>
-<td width="50%"><b>APK Multi-formato</b><br/><img src="docs/screenshots/apk.png" alt="APK"/></td>
-<td width="50%"><b>Netsniff con GeoIP/WHOIS</b><br/><img src="docs/screenshots/netsniff.png" alt="Netsniff"/></td>
-</tr>
-</table>
 
 ---
 
