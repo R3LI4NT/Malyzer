@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/R3LI4NT/Malyzer/refs/heads/main/img/logo.png?token=GHSAT0AAAAAADWDC2V5YPRIYZQZXYDURSNA2PXVGTQ" alt="Malyzer" width="180"/>
+<img src="https://github.com/user-attachments/assets/54469fdb-5935-418f-933d-a416e56fe102" alt="Malyzer" width="180"/>
 
 # Malyzer
 
