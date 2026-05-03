@@ -640,8 +640,6 @@ git push origin feat/mi-feature
 
 ## 📄 Licencia
 
-Distribuido bajo licencia **MIT**. Ver [`LICENSE`](LICENSE) para más detalles.
-
 ```
 MIT License · Copyright (c) 2026 R3LI4NT
 
