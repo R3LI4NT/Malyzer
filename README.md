@@ -667,6 +667,7 @@ in the Software without restriction…
 <img src="https://img.shields.io/badge/r3li4nt.contact@keemail.me-F00200?style=for-the-badge&logo=gmail&logoColor=white" />
 
 <br/>
+<br/>
 
 ⭐ **Si Malyzer te resultó útil, considerá darle una estrella en GitHub** ⭐
 
