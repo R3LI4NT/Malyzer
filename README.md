@@ -109,19 +109,19 @@ Cuando llega una muestra desconocida a tu laboratorio, el flujo típico requiere
 
 El **dispatcher** detecta el tipo de archivo por magic bytes y delega al analizador específico. Soporta tanto binarios nativos como formatos contenedores y scripts.
 
-| Formato | Icono | Analizador | Detecciones específicas |
+| Formato | Analizador | Detecciones específicas |
 |---------|:-:|------------|------------------------|
-| **Windows PE** (EXE/DLL) | 🖥️ | `AnalizadorPe` | Imports, secciones, entropía, packers, IOCs, YARA |
-| **Android APK** | 📱 | `AnalizadorApk` | 28+ permisos peligrosos categorizados, DEX, librerías nativas |
-| **Office OOXML** (DOCX/XLSX/PPTX) | 📄 | `AnalizadorOfficeOoxml` | Macros VBA, contenido externo, URLs, OLE objects |
-| **Office OLE** (DOC/XLS/PPT) | 📄 | `AnalizadorOfficeOle` | Streams VBA, equation editor, embedded objects |
-| **PDF** | 📕 | `AnalizadorPdf` | `/JavaScript`, `/OpenAction`, embedded files, URIs |
-| **Scripts** | 📜 | `AnalizadorScript` | PowerShell, VBS, JS, Batch, Bash, Python, Perl, Ruby, Lua |
-| **Java JAR** | ☕ | `AnalizadorJar` | Manifest, classes, imports sospechosos, resources |
-| **Linux ELF** | 🐧 | `AnalizadorPe` (genérico) | Headers, secciones, strings, IOCs |
-| **macOS Mach-O** | 🍎 | Genérico | Strings, IOCs, hashes |
-| **ZIP genérico** | 📦 | Genérico | Inspección de contenidos |
-| **Binario desconocido** | 📄 | `AnalizadorGenerico` | Hashes, entropía, strings, IOCs por regex |
+| **Windows PE** (EXE/DLL) | `AnalizadorPe` | Imports, secciones, entropía, packers, IOCs, YARA |
+| **Android APK** | `AnalizadorApk` | 28+ permisos peligrosos categorizados, DEX, librerías nativas |
+| **Office OOXML** (DOCX/XLSX/PPTX) | `AnalizadorOfficeOoxml` | Macros VBA, contenido externo, URLs, OLE objects |
+| **Office OLE** (DOC/XLS/PPT) | `AnalizadorOfficeOle` | Streams VBA, equation editor, embedded objects |
+| **PDF** | `AnalizadorPdf` | `/JavaScript`, `/OpenAction`, embedded files, URIs |
+| **Scripts** | `AnalizadorScript` | PowerShell, VBS, JS, Batch, Bash, Python, Perl, Ruby, Lua |
+| **Java JAR** | `AnalizadorJar` | Manifest, classes, imports sospechosos, resources |
+| **Linux ELF** | `AnalizadorPe` (genérico) | Headers, secciones, strings, IOCs |
+| **macOS Mach-O** | Genérico | Strings, IOCs, hashes |
+| **ZIP genérico** | Genérico | Inspección de contenidos |
+| **Binario desconocido** | `AnalizadorGenerico` | Hashes, entropía, strings, IOCs por regex |
 
 > [!TIP]
 > Cada analizador alimenta un modelo común `ResultadoMultiFormato` con `Indicadores` (severidad alta/media/baja), `Strings`, `Metadata` y un `Veredicto` calculado: **Limpio · Bajo riesgo · Sospechoso · Probablemente malicioso**.
