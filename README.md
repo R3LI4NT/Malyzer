@@ -222,8 +222,6 @@ Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con
 
 ## 📸 Capturas
 
-> Reemplazá estas referencias por capturas reales en `docs/screenshots/` cuando subas las imágenes.
-
 <table>
 <tr>
 <td width="50%"><b>Análisis estático</b><br/><img src="docs/screenshots/static.png" alt="Estático"/></td>
