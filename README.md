@@ -11,7 +11,7 @@
 <br/>
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/)
-[![WPF](https://img.shields.io/badge/VERSION-1.0-0078D4?style=for-the-badge&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/wpf/)
+[![WPF](https://img.shields.io/badge/VERSION-1.0-FF6200?style=for-the-badge&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/wpf/)
 [![Windows](https://img.shields.io/badge/Windows-10%20%2F%2011-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
 [![Licencia](https://img.shields.io/badge/Licencia-MIT-22C55E?style=for-the-badge)](#-licencia)
 [![Idioma](https://img.shields.io/badge/i18n-ES%20%2F%20EN-E11D2E?style=for-the-badge)](#-internacionalización)
