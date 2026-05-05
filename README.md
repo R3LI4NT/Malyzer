@@ -21,7 +21,6 @@
 <br/>
 
 **[Características](#-características)** ·
-**[Capturas](#-capturas)** ·
 **[Instalación](#-instalación)** ·
 **[Uso](#-uso)** ·
 **[Stack](#%EF%B8%8F-stack-técnico)** ·
