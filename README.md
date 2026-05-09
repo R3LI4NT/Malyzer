@@ -102,7 +102,6 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
 - [Aviso sobre antivirus](#%EF%B8%8F-aviso-sobre-antivirus)
 - [Internacionalización](#-internacionalización)
 - [Roadmap](#%EF%B8%8F-roadmap)
-- [Contribuir](#-contribuir)
 - [Licencia](#-licencia)
 
 ---
@@ -152,12 +151,10 @@ El **dispatcher** detecta el tipo de archivo por magic bytes y delega al analiza
 | **Linux ELF** | `AnalizadorPe` (genérico) | Headers, secciones, strings, IOCs |
 | **macOS Mach-O** | Genérico | Strings, IOCs, hashes |
 | **ZIP genérico** | Genérico | Inspección de contenidos |
-| **Windows Shortcut** (LNK) ⭐ | `AnalizadorLnk` | Parser MS-SHLLINK · LOLBins · PowerShell encoded · icon spoofing · URLs en argumentos |
-| **Microsoft OneNote** (.one) ⭐ | `AnalizadorOneNote` | `FileDataStoreObject` embedded · ejecutables/scripts/HTML |
-| **Email** (EML/MSG) ⭐ | `AnalizadorEmail` | Headers RFC 5322 · SPF/DKIM/DMARC · From mismatch · doble extensión · RTL override |
+| **Windows Shortcut** (LNK) | `AnalizadorLnk` | Parser MS-SHLLINK · LOLBins · PowerShell encoded · icon spoofing · URLs en argumentos |
+| **Microsoft OneNote** (.one) | `AnalizadorOneNote` | `FileDataStoreObject` embedded · ejecutables/scripts/HTML |
+| **Email** (EML/MSG) | `AnalizadorEmail` | Headers RFC 5322 · SPF/DKIM/DMARC · From mismatch · doble extensión · RTL override |
 | **Binario desconocido** | `AnalizadorGenerico` | Hashes, entropía, strings, IOCs por regex |
-
-⭐ Formatos nuevos en v1.1
 
 > [!TIP]
 > Cada analizador alimenta un modelo común `ResultadoMultiFormato` con `Indicadores` (severidad alta/media/baja), `Strings`, `Metadata` y un `Veredicto` calculado: **Limpio · Bajo riesgo · Sospechoso · Probablemente malicioso**.
@@ -244,13 +241,11 @@ Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con
 | **VirusTotal v3** | Hashes, dominios, URLs · 90+ AV engines · subida | 4 req/min, 500/día |
 | **AbuseIPDB v2** | Reputación de IPs | 1.000 req/día |
 | **AlienVault OTX** | Hashes y dominios contra pulsos | sin límite práctico |
-| **MalwareBazaar** ⭐ | Lookup de hashes con familia + reglas YARA matcheadas · subida | registro gratuito en auth.abuse.ch |
-| **ThreatFox** ⭐ | IOCs estructurados con familia y nivel de confianza | misma key que MalwareBazaar |
+| **MalwareBazaar** | Lookup de hashes con familia + reglas YARA matcheadas · subida | registro gratuito en auth.abuse.ch |
+| **ThreatFox** | IOCs estructurados con familia y nivel de confianza | misma key que MalwareBazaar |
 | **URLhaus** | URLs maliciosas conocidas | público |
 | **PhishTank** | URLs de phishing reportadas | público |
 | **Heurísticas locales** | TLDs sospechosos, palabras de phishing, IPs literales, URL-encoding excesivo | offline |
-
-⭐ Fuentes nuevas en v1.1
 
 **Auto-detección del tipo de IOC** (hash MD5/SHA-1/SHA-256, IP, dominio o URL) y consultas en lote.
 
@@ -493,9 +488,7 @@ Configuración → **Claves de API**. Todas las APIs son opcionales — la app f
 | **VirusTotal** | Hashes, IPs, dominios, URLs en Threat Intel y URL Scan + **subida de muestras** | Gratis (4 req/min, 500/día) |
 | **AbuseIPDB** | Reputación de IPs | Gratis (1.000 req/día) |
 | **AlienVault OTX** | Hashes y dominios contra pulsos de la comunidad | Gratis sin límite práctico |
-| **abuse.ch / MalwareBazaar** ⭐ | Lookup MalwareBazaar/ThreatFox + **subida de muestras** | Gratis · registro en [auth.abuse.ch](https://auth.abuse.ch/) |
-
-⭐ Nuevo en v1.1
+| **abuse.ch / MalwareBazaar** | Lookup MalwareBazaar/ThreatFox + **subida de muestras** | Gratis · registro en [auth.abuse.ch](https://auth.abuse.ch/) |
 
 ### Idioma
 
@@ -584,14 +577,6 @@ Diseño modular con servicios independientes que pueden testearse y reemplazarse
 - **OLE Compound File** — parser propio para `.msg` de Outlook
 - **MS-SHLLINK** — parser propio para `.lnk` (no requiere lib externa)
 
-### Diseño
-
-- **Paleta**: `#0A0606` base, `#E11D2E` acento, `#F4ECEC` texto
-- **Tipografía**: Segoe UI para UI, Cascadia Mono para hashes/código
-- **Iconos**: Material Design Icons como Geometry XAML
-- **i18n**: `LocExtension` markup `{loc:Loc clave}` con gestor singleton `INotifyPropertyChanged`
-- **Tema oscuro**: paleta consistente en toda la app (DataGrids, ContextMenus, MessageBoxes, ScrollBars con templates custom)
-
 ---
 
 ## 📂 Estructura del proyecto
@@ -601,84 +586,84 @@ Diseño modular con servicios independientes que pueden testearse y reemplazarse
 
 ```
 Malyzer/
-├── App.xaml(.cs)                    # Bootstrap, splash, configuración global
-├── VentanaPrincipal.xaml(.cs)       # Shell con sidebar + frame de contenido
-├── VentanaSplash.xaml(.cs)          # Splash de carga
-├── VentanaAcercaDe.xaml(.cs)        # About box
-├── LocExtension.cs                  # Markup extension para i18n
-├── Malyzer.csproj                   # Proyecto .NET 8 WPF
+├── App.xaml(.cs)                    
+├── VentanaPrincipal.xaml(.cs)       
+├── VentanaSplash.xaml(.cs)        
+├── VentanaAcercaDe.xaml(.cs)      
+├── LocExtension.cs                 
+├── Malyzer.csproj                  
 │
-├── Servicios/                       # Lógica de negocio (25+ servicios)
+├── Servicios/                       
 │   │
 │   ├── # Análisis multi-formato
-│   ├── AnalizadorMultiFormato.cs    # Dispatcher por magic bytes
-│   ├── AnalizadorPorFormato.cs      # PE, OOXML, OLE, PDF, Script, JAR, genérico
-│   ├── AnalizadorApk.cs             # Análisis APK + permisos peligrosos
-│   ├── AnalizadorEstatico.cs        # Análisis PE detallado
-│   ├── AnalizadorDinamico.cs        # Sandbox local
-│   ├── AnalizadorLnk.cs             # ⭐ v1.1 — Parser MS-SHLLINK + LOLBin detection
-│   ├── AnalizadorOneNote.cs         # ⭐ v1.1 — Detector de embedded executables
-│   ├── AnalizadorEmail.cs           # ⭐ v1.1 — RFC 5322 + OLE Outlook + SPF/DKIM/DMARC
-│   ├── AnalizadorAuthenticode.cs    # ⭐ v1.1 — WinVerifyTrust + Rich Header parser
+│   ├── AnalizadorMultiFormato.cs  
+│   ├── AnalizadorPorFormato.cs     
+│   ├── AnalizadorApk.cs          
+│   ├── AnalizadorEstatico.cs        
+│   ├── AnalizadorDinamico.cs       
+│   ├── AnalizadorLnk.cs             
+│   ├── AnalizadorOneNote.cs         
+│   ├── AnalizadorEmail.cs           
+│   ├── AnalizadorAuthenticode.cs    
 │   │
 │   ├── # Inteligencia
-│   ├── MotorYara.cs                 # YARA con 10 reglas built-in
-│   ├── MapeadorMitre.cs             # Detección 26 técnicas
-│   ├── DiferenciadorMuestras.cs     # Diff multi-dimensión
-│   ├── SsDeep.cs                    # CTPH puro C#
-│   ├── DecodificadorCadenas.cs      # Capstone disasm
-│   ├── TrazadorEtw.cs               # ETW kernel tracing
-│   ├── ClasificadorML.cs            # k-NN classifier
+│   ├── MotorYara.cs                
+│   ├── MapeadorMitre.cs             
+│   ├── DiferenciadorMuestras.cs   
+│   ├── SsDeep.cs                   
+│   ├── DecodificadorCadenas.cs    
+│   ├── TrazadorEtw.cs             
+│   ├── ClasificadorML.cs         
 │   │
 │   ├── # Threat intelligence
-│   ├── IntelAmenazas.cs             # VT/AbuseIPDB/OTX + MalwareBazaar/ThreatFox ⭐ v1.1
-│   ├── SubidorMuestras.cs           # ⭐ v1.1 — Subida a VT + MalwareBazaar
-│   ├── EscanerUrl.cs                # VT + URLhaus + PhishTank
-│   ├── InspectorIp.cs               # GeoIP + RDAP
+│   ├── IntelAmenazas.cs             
+│   ├── SubidorMuestras.cs           
+│   ├── EscanerUrl.cs                
+│   ├── InspectorIp.cs              
 │   │
 │   ├── # Sistema y red
-│   ├── InspectorSistema.cs          # Procesos/conexiones/hosts/registro
-│   ├── Netsniff.cs                  # SharpPcap wrapper
-│   ├── HerramientasPro.cs           # Memory dump, deobfuscación
+│   ├── InspectorSistema.cs         
+│   ├── Netsniff.cs                  
+│   ├── HerramientasPro.cs         
 │   │
 │   ├── # Gestión y soporte
-│   ├── GestorMuestras.cs            # SQLite repo
-│   ├── GestorConfiguracion.cs       # config.json
-│   ├── GestorIdioma.cs              # i18n singleton (1.000+ strings)
-│   └── ExportadorPdf.cs             # QuestPDF templates
+│   ├── GestorMuestras.cs           
+│   ├── GestorConfiguracion.cs      
+│   ├── GestorIdioma.cs             
+│   └── ExportadorPdf.cs          
 │
-├── Vistas/                          # Páginas WPF (13 páginas)
+├── Vistas/                         
 │   ├── PaginaInicio.xaml(.cs)
-│   ├── PaginaAnalisisEstatico.xaml(.cs)         # Tab "Firma digital" ⭐ v1.1
+│   ├── PaginaAnalisisEstatico.xaml(.cs)         
 │   ├── PaginaAnalisisDinamico.xaml(.cs)
-│   ├── PaginaInteligencia.xaml(.cs)             # Tabs Lookup + Subir ⭐ v1.1
-│   ├── PaginaInteligenciaAvanzada.xaml(.cs)     # Diff/MITRE/Decoder/ETW + Multi-formato PDF ⭐ v1.1
+│   ├── PaginaInteligencia.xaml(.cs)            
+│   ├── PaginaInteligenciaAvanzada.xaml(.cs)    
 │   ├── PaginaMuestras.xaml(.cs)
 │   ├── PaginaClasificacion.xaml(.cs)
 │   ├── PaginaVisualizacion.xaml(.cs)
 │   ├── PaginaHerramientasPro.xaml(.cs)
-│   ├── PaginaConfiguracion.xaml(.cs)            # Campo abuse.ch ⭐ v1.1
+│   ├── PaginaConfiguracion.xaml(.cs)           
 │   ├── PaginaSistema.xaml(.cs)
 │   ├── PaginaNetsniff.xaml(.cs)
 │   ├── PaginaUrlScan.xaml(.cs)
-│   └── VentanaDetalleSubida.xaml(.cs)           # ⭐ v1.1 — Modal con detecciones por motor AV
+│   └── VentanaDetalleSubida.xaml(.cs)          
 │
-├── Estilos/                         # Tema oscuro WPF
-│   ├── Tema.xaml                    # Paleta + tipografía
-│   ├── Iconos.xaml                  # Geometrías SVG
-│   └── Controles.xaml               # Templates de DataGrid/ContextMenu/etc
+├── Estilos/                       
+│   ├── Tema.xaml                   
+│   ├── Iconos.xaml                  
+│   └── Controles.xaml               
 │
 ├── Modelos/
-│   └── Modelos.cs                   # POCOs (Muestra, ResultadoAnalisis, FirmaDigitalInfo, RichHeaderInfo, ResultadoSubidaMuestra, DeteccionAv…)
+│   └── Modelos.cs                   
 │
-├── Recursos/                        # Estáticos
+├── Recursos/                       
 │   ├── logo.png / logo_256.png / logo_64.png
-│   ├── logo.ico                     # Favicon
-│   ├── espanol.ico / english.ico    # Banderas para selector idioma
-│   └── reglas_ejemplo.yar           # Reglas YARA externas de ejemplo
+│   ├── logo.ico                    
+│   ├── espanol.ico / english.ico  
+│   └── reglas_ejemplo.yar           
 │
-├── compilar.bat                     # Build script
-└── README.md                        # Este archivo
+├── compilar.bat                     
+└── README.md                       
 ```
 
 </details>
@@ -792,53 +777,6 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 - [x] Fix de subida a VirusTotal con filenames no-ASCII
 
 ### v1.2 · Próxima
-
-- [ ] **Sigma rules engine** sobre eventos ETW
-- [ ] **YARA rule generator** desde una muestra (como `yarGen`)
-- [ ] **iLSpy embebido** para decompilación .NET en vista integrada
-- [ ] **FakeDNS + FakeNet** local para sandbox sin internet
-- [ ] **Memory string scanning** post-execution con `MiniDumpWriteDump`
-- [ ] **PCAP analyzer** offline (abrir `.pcap` exportado de Wireshark)
-- [ ] **Soporte de RTF, CHM, HTA, XLL, ISO** como nuevos formatos
-
-### v2.0 · Largo plazo
-
-- [ ] **Plugin system** con interfaces `IAnalizadorPlugin` para extensibilidad de terceros
-- [ ] **Export STIX 2.1 / MISP** para integración con plataformas TI
-- [ ] **Windows Sandbox (WSB)** integration para detonación aislada
-- [ ] **Control flow graph (CFG)** con render WPF interactivo
-- [ ] **Sigma → SIEM rules** (Splunk, Elastic, Sentinel)
-- [ ] **Modo CLI headless** para integrarlo en pipelines de CI/CD
-
----
-
-## 🤝 Contribuir
-
-¡Las contribuciones son bienvenidas! Algunas ideas:
-
-- 🛡️ **Más reglas YARA** en `Servicios/MotorYara.cs`
-- 🎯 **Nuevas técnicas MITRE** en `Servicios/MapeadorMitre.cs`
-- 📄 **Soporte de nuevos formatos** en `AnalizadorMultiFormato.cs` (RTF, CHM, HTA, XLL, ISO…)
-- 🌍 **Traducciones** a otros idiomas
-- 🐛 **Fixes de bugs** y mejoras de UX
-- ✨ **Nuevas features** del roadmap
-
-### Workflow
-
-```bash
-# 1. Forkeá el repo en GitHub
-# 2. Cloná tu fork
-git clone https://github.com/tu-usuario/Malyzer.git
-
-# 3. Creá una branch
-git checkout -b feat/mi-feature
-
-# 4. Hacé tus cambios y commiteá
-git commit -m "feat: agregar detección de Cobalt Strike beacons"
-
-# 5. Pusheá y abrí PR
-git push origin feat/mi-feature
-```
 
 ---
 
