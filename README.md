@@ -64,7 +64,6 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
 - 📤 **Subida de muestras** — Tab nueva en Threat Intel para enviar muestras a **VirusTotal** y **MalwareBazaar** sin salir de la app. Soporta tags, comentario, modo público/privado, polling automático y detección de duplicados (devuelve el reporte directamente sin re-subir).
 - 👁️ **Visualización de detecciones por motor AV** — Cada subida tiene un botón con icono de ojo que abre un modal con los **72+ motores antivirus** de VirusTotal y su veredicto individual (categoría, detección, versión, fecha de actualización), con filtros de búsqueda y "solo maliciosos".
 - 📄 **Más exportación PDF** — Threat Intel (lookup), Subidas y Multi-formato ahora se pueden exportar como reporte PDF estilizado.
-- 🐛 **Fix de cascada de popups WPF** — corregido un bug donde un binding TwoWay sobre un tipo anónimo lanzaba 10+ MessageBoxes en cascada al renderizar las listas de IOCs y subidas.
 
 ---
 
