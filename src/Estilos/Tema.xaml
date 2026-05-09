@@ -1,0 +1,77 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <FontFamily x:Key="FuenteUI">Segoe UI, Inter, system-ui, sans-serif</FontFamily>
+    <FontFamily x:Key="FuenteMono">Cascadia Mono, Consolas, Courier New, monospace</FontFamily>
+
+    <Color x:Key="ColorBaseColor">#0A0606</Color>
+    <Color x:Key="ColorMantleColor">#050202</Color>
+    <Color x:Key="ColorCrustColor">#000000</Color>
+
+    <Color x:Key="ColorSuperficieColor">#180D0D</Color>
+    <Color x:Key="ColorSuperficie1Color">#241313</Color>
+    <Color x:Key="ColorSuperficie2Color">#3A1A1A</Color>
+
+    <Color x:Key="ColorTextoColor">#F5E8E8</Color>
+    <Color x:Key="ColorTextoSecundarioColor">#B89999</Color>
+    <Color x:Key="ColorTextoTenueColor">#7A5858</Color>
+
+    <Color x:Key="ColorAcentoColor">#E11D2E</Color>
+    <Color x:Key="ColorRojoColor">#FF1F2D</Color>
+    <Color x:Key="ColorRojoBrillanteColor">#FF3D4A</Color>
+    <Color x:Key="ColorRojoOscuroColor">#8B0F18</Color>
+    <Color x:Key="ColorRosaColor">#FF6B6B</Color>
+    <Color x:Key="ColorMoradoColor">#A01828</Color>
+    <Color x:Key="ColorVerdeColor">#22C55E</Color>
+    <Color x:Key="ColorTealColor">#14B8A6</Color>
+    <Color x:Key="ColorCyanColor">#06B6D4</Color>
+    <Color x:Key="ColorAmarilloColor">#EAB308</Color>
+    <Color x:Key="ColorNaranjaColor">#F97316</Color>
+
+    <Color x:Key="ColorBordeColor">#3A1A1A</Color>
+    <Color x:Key="ColorBordeAcentoColor">#E11D2E</Color>
+
+    <SolidColorBrush x:Key="ColorBase" Color="{StaticResource ColorBaseColor}"/>
+    <SolidColorBrush x:Key="ColorMantle" Color="{StaticResource ColorMantleColor}"/>
+    <SolidColorBrush x:Key="ColorCrust" Color="{StaticResource ColorCrustColor}"/>
+
+    <SolidColorBrush x:Key="ColorSuperficie" Color="{StaticResource ColorSuperficieColor}"/>
+    <SolidColorBrush x:Key="ColorSuperficie1" Color="{StaticResource ColorSuperficie1Color}"/>
+    <SolidColorBrush x:Key="ColorSuperficie2" Color="{StaticResource ColorSuperficie2Color}"/>
+
+    <SolidColorBrush x:Key="ColorTexto" Color="{StaticResource ColorTextoColor}"/>
+    <SolidColorBrush x:Key="ColorTextoSecundario" Color="{StaticResource ColorTextoSecundarioColor}"/>
+    <SolidColorBrush x:Key="ColorTextoTenue" Color="{StaticResource ColorTextoTenueColor}"/>
+
+    <SolidColorBrush x:Key="ColorAcento" Color="{StaticResource ColorAcentoColor}"/>
+    <SolidColorBrush x:Key="ColorRojo" Color="{StaticResource ColorRojoColor}"/>
+    <SolidColorBrush x:Key="ColorRojoBrillante" Color="{StaticResource ColorRojoBrillanteColor}"/>
+    <SolidColorBrush x:Key="ColorRojoOscuro" Color="{StaticResource ColorRojoOscuroColor}"/>
+    <SolidColorBrush x:Key="ColorRosa" Color="{StaticResource ColorRosaColor}"/>
+    <SolidColorBrush x:Key="ColorMorado" Color="{StaticResource ColorMoradoColor}"/>
+    <SolidColorBrush x:Key="ColorVerde" Color="{StaticResource ColorVerdeColor}"/>
+    <SolidColorBrush x:Key="ColorTeal" Color="{StaticResource ColorTealColor}"/>
+    <SolidColorBrush x:Key="ColorCyan" Color="{StaticResource ColorCyanColor}"/>
+    <SolidColorBrush x:Key="ColorAmarillo" Color="{StaticResource ColorAmarilloColor}"/>
+    <SolidColorBrush x:Key="ColorNaranja" Color="{StaticResource ColorNaranjaColor}"/>
+
+    <SolidColorBrush x:Key="ColorBorde" Color="{StaticResource ColorBordeColor}"/>
+    <SolidColorBrush x:Key="ColorBordeAcento" Color="{StaticResource ColorBordeAcentoColor}"/>
+
+    <LinearGradientBrush x:Key="GradienteRojo" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#E11D2E" Offset="0"/>
+        <GradientStop Color="#8B0F18" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GradienteFondo" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#0F0707" Offset="0"/>
+        <GradientStop Color="#0A0606" Offset="0.5"/>
+        <GradientStop Color="#150909" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="GradienteSidebar" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#0F0707" Offset="0"/>
+        <GradientStop Color="#080404" Offset="1"/>
+    </LinearGradientBrush>
+
+</ResourceDictionary>

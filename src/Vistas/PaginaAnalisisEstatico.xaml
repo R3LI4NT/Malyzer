@@ -1,0 +1,315 @@
+<Page x:Class="Malyzer.Vistas.PaginaAnalisisEstatico"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:Malyzer"
+      Background="{StaticResource ColorBase}"
+      Foreground="{StaticResource ColorTexto}">
+    <Grid Margin="32,24,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="{loc:Loc pag.estatico.titulo}" Style="{StaticResource TituloPagina}"/>
+            <TextBlock Text="{loc:Loc pag.estatico.subtitulo}" Style="{StaticResource SubtituloPagina}" Margin="0,0,0,16"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{loc:Loc lbl.archivo}" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox x:Name="campoRuta" Width="600" IsReadOnly="True" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="{loc:Loc btn.cargar_archivo}" Style="{StaticResource BotonPrimario}" Margin="0,0,8,0" Click="Cargar_Click"/>
+                    <Button x:Name="botonAnalizar" Content="Analizar" Style="{StaticResource BotonSecundario}" Margin="0,0,8,0" Click="Analizar_Click" IsEnabled="False"/>
+                    <Button x:Name="botonExportar" Content="{loc:Loc btn.exportar_reporte}" Style="{StaticResource BotonSecundario}" Click="Exportar_Click" IsEnabled="False"/>
+                    <Button x:Name="botonExportarPdf" Content="{loc:Loc btn.exportar_pdf}" Style="{StaticResource BotonPrimario}" Click="ExportarPdf_Click" IsEnabled="False" Margin="8,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="2" Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <TextBlock x:Name="textoEstadoAnalisis" Text="{loc:Loc lbl.esperando_archivo}" Foreground="{StaticResource ColorTextoSecundario}"/>
+                    <ProgressBar x:Name="barraProgreso" Height="4" Margin="0,8,0,0" IsIndeterminate="False" Value="0" Maximum="100"/>
+                </StackPanel>
+                <Border Grid.Column="1" x:Name="cajaVeredicto" Background="{StaticResource ColorSuperficie1}" CornerRadius="6" Padding="14,8" VerticalAlignment="Center" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{loc:Loc pag.estatico.riesgo}" Foreground="{StaticResource ColorTextoSecundario}" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="textoVeredicto" Foreground="{StaticResource ColorTexto}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="textoPuntuacion" Foreground="{StaticResource ColorTextoSecundario}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <TabControl Grid.Row="3" x:Name="pestanas">
+            <TabItem Header="{loc:Loc pag.estatico.tab_general}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc col.nombre}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" x:Name="vNombre" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc col.tamano}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" x:Name="vTamano" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc pag.estatico.tipo_magico}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" x:Name="vTipo" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="MD5" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" x:Name="vMd5" Text="-" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="SHA-1" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" x:Name="vSha1" Text="-" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="SHA-256" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" x:Name="vSha256" Text="-" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="{loc:Loc pag.estatico.entropia_total}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" x:Name="vEntropia" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="7" Grid.Column="0" Text="Arquitectura" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="7" Grid.Column="1" x:Name="vArq" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="8" Grid.Column="0" Text="Compilado" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="8" Grid.Column="1" x:Name="vCompilado" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                        <TextBlock Grid.Row="9" Grid.Column="0" Text="Packer" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                        <TextBlock Grid.Row="9" Grid.Column="1" x:Name="vPacker" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_pe}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <TextBlock x:Name="textoSinPe" Text="{loc:Loc pag.estatico.no_pe}" Foreground="{StaticResource ColorTextoTenue}" Visibility="Collapsed" FontStyle="Italic"/>
+                        <Grid x:Name="bloquePe">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc pag.estatico.tipo_maquina}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="peMaquina" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Subsistema" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="peSubsistema" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc pag.estatico.tipo_ejecutable}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="peTipo" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Es DLL" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="peEsDll" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc pag.estatico.punto_entrada}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" x:Name="peEntrada" Text="-" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="{loc:Loc pag.estatico.base_imagen}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" x:Name="peBase" Text="-" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="{loc:Loc pag.estatico.num_secciones}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="6" Grid.Column="1" x:Name="peSecciones" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="Firma digital" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="7" Grid.Column="1" x:Name="peFirma" Text="-" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="Recursos" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                            <TextBlock Grid.Row="8" Grid.Column="1" x:Name="peRecursos" Text="-" Foreground="{StaticResource ColorTexto}" TextWrapping="Wrap" Margin="0,4"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_secciones}">
+                <DataGrid x:Name="gridSecciones" AutoGenerateColumns="False" IsReadOnly="True" Margin="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{loc:Loc col.nombre}" Binding="{Binding Nombre}" Width="120"/>
+                        <DataGridTextColumn Header="VA" Binding="{Binding VA}" Width="100"/>
+                        <DataGridTextColumn Header="{loc:Loc col.tamano_virtual}" Binding="{Binding TamanoVirtual}" Width="120"/>
+                        <DataGridTextColumn Header="{loc:Loc col.tamano_crudo}" Binding="{Binding TamanoCrudo}" Width="120"/>
+                        <DataGridTextColumn Header="{loc:Loc col.caracteristicas}" Binding="{Binding Caracteristicas}" Width="*"/>
+                        <DataGridTextColumn Header="{loc:Loc col.entropia}" Binding="{Binding Entropia}" Width="100"/>
+                        <DataGridTextColumn Header="{loc:Loc col.sospechosa}" Binding="{Binding Sospechosa}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_imports}">
+                <DataGrid x:Name="gridImportaciones" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="DLL" Binding="{Binding Dll}" Width="200"/>
+                        <DataGridTextColumn Header="Funciones" Binding="{Binding ListaFunciones}" Width="*"/>
+                        <DataGridTextColumn Header="{loc:Loc col.sospechosa}" Binding="{Binding Sospechosa}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_strings}">
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="12">
+                        <CheckBox x:Name="chkAscii" Content="ASCII" IsChecked="True" Foreground="{StaticResource ColorTexto}" Margin="0,0,12,0" Click="FiltrarStrings_Click"/>
+                        <CheckBox x:Name="chkUnicode" Content="Unicode" IsChecked="True" Foreground="{StaticResource ColorTexto}" Margin="0,0,12,0" Click="FiltrarStrings_Click"/>
+                        <TextBlock Text="Filtro:" Foreground="{StaticResource ColorTextoSecundario}" VerticalAlignment="Center" Margin="12,0,8,0"/>
+                        <TextBox x:Name="campoFiltroStrings" Width="280" TextChanged="FiltroStrings_Changed"/>
+                        <TextBlock x:Name="contadorStrings" Foreground="{StaticResource ColorTextoTenue}" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                    </StackPanel>
+                    <ListBox Grid.Row="1" x:Name="listaStrings" FontFamily="Cascadia Mono, Consolas" FontSize="12" Background="{StaticResource ColorMantle}"/>
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_iocs}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="URLs" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource ColorAcento}"/>
+                        <ItemsControl x:Name="listaUrls" Margin="0,4,0,12"/>
+
+                        <TextBlock Text="IPs" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource ColorAcento}"/>
+                        <ItemsControl x:Name="listaIps" Margin="0,4,0,12"/>
+
+                        <TextBlock Text="Dominios" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource ColorAcento}"/>
+                        <ItemsControl x:Name="listaDominios" Margin="0,4,0,12"/>
+
+                        <TextBlock Text="{loc:Loc pdf.iocs_registro}" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource ColorAcento}"/>
+                        <ItemsControl x:Name="listaRegistros" Margin="0,4,0,12"/>
+
+                        <TextBlock Text="{loc:Loc pdf.iocs_rutas}" FontWeight="SemiBold" FontSize="13" Foreground="{StaticResource ColorAcento}"/>
+                        <ItemsControl x:Name="listaRutas" Margin="0,4,0,12"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_yara}">
+                <ItemsControl x:Name="listaYara" Margin="16">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{StaticResource ColorSuperficie}" CornerRadius="6" Padding="12" Margin="0,4">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Regla}" FontWeight="Bold" Foreground="{StaticResource ColorRosa}" FontSize="14"/>
+                                        <TextBlock Text="{Binding Etiquetas}" Foreground="{StaticResource ColorTextoTenue}" Margin="12,0,0,0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding Descripcion}" Foreground="{StaticResource ColorTextoSecundario}" TextWrapping="Wrap" Margin="0,4,0,0"/>
+                                    <ItemsControl ItemsSource="{Binding Cadenas}" Margin="0,8,0,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" FontFamily="Cascadia Mono" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,1"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </TabItem>
+
+            <TabItem Header="{loc:Loc pag.estatico.tab_firma}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,12,0,0">
+                        <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12" x:Name="cajaFirma">
+                            <StackPanel>
+                                <TextBlock Text="{loc:Loc pag.estatico.firma_titulo}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_estado}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textoFirmaEstado" Foreground="{StaticResource ColorTexto}" FontWeight="SemiBold" Margin="0,4"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_sujeto}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="textoFirmaSujeto" Foreground="{StaticResource ColorTexto}" TextWrapping="Wrap" Margin="0,4"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_emisor}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="textoFirmaEmisor" Foreground="{StaticResource ColorTexto}" TextWrapping="Wrap" Margin="0,4"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_emision}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="3" Grid.Column="1" x:Name="textoFirmaEmision" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_vencimiento}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="4" Grid.Column="1" x:Name="textoFirmaVencimiento" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="5" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_algoritmo}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="5" Grid.Column="1" x:Name="textoFirmaAlgoritmo" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="6" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_huella}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="6" Grid.Column="1" x:Name="textoFirmaHuella" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" FontSize="11" Margin="0,4" TextWrapping="Wrap"/>
+                                    <TextBlock Grid.Row="7" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_serie}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="7" Grid.Column="1" x:Name="textoFirmaSerie" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" FontSize="11" Margin="0,4"/>
+                                    <TextBlock Grid.Row="8" Grid.Column="0" Text="{loc:Loc pag.estatico.firma_chequeo}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="8" Grid.Column="1" x:Name="textoFirmaChequeo" TextWrapping="Wrap" Margin="0,4"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,12" x:Name="cajaRich">
+                            <StackPanel>
+                                <TextBlock Text="{loc:Loc pag.estatico.rich_titulo}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                                <Grid Margin="0,0,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="180"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Loc pag.estatico.rich_presente}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="0" Grid.Column="1" x:Name="textoRichPresente" Foreground="{StaticResource ColorTexto}" FontWeight="SemiBold" Margin="0,4"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Loc pag.estatico.rich_compilador}" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" x:Name="textoRichCompilador" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Checksum" Style="{StaticResource EtiquetaCampo}" Margin="0,4"/>
+                                    <TextBlock Grid.Row="2" Grid.Column="1" x:Name="textoRichChecksum" Foreground="{StaticResource ColorTexto}" FontFamily="Cascadia Mono" Margin="0,4"/>
+                                </Grid>
+                                <DataGrid x:Name="gridRichEntradas" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="None"
+                                          Background="{StaticResource ColorBase}" Foreground="{StaticResource ColorTexto}"
+                                          BorderBrush="{StaticResource ColorBorde}" RowBackground="Transparent" AlternatingRowBackground="#10FFFFFF"
+                                          MaxHeight="320">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="ProductID" Binding="{Binding ProductId}" Width="120"/>
+                                        <DataGridTextColumn Header="{loc:Loc pag.estatico.rich_producto}" Binding="{Binding ProductoNombre}" Width="*"/>
+                                        <DataGridTextColumn Header="Build" Binding="{Binding BuildNumber}" Width="80"/>
+                                        <DataGridTextColumn Header="Count" Binding="{Binding Count}" Width="80"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

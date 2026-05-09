@@ -1,0 +1,138 @@
+<Page x:Class="Malyzer.Vistas.PaginaConfiguracion"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:loc="clr-namespace:Malyzer"
+      Background="{StaticResource ColorBase}"
+      Foreground="{StaticResource ColorTexto}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,24,32,32">
+            <TextBlock Text="{loc:Loc pag.config.titulo}" Style="{StaticResource TituloPagina}"/>
+            <TextBlock Text="{loc:Loc pag.config.subtitulo}" Style="{StaticResource SubtituloPagina}" Margin="0,0,0,24"/>
+
+            <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Loc pag.config.idioma}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,8"/>
+                    <TextBlock Text="{loc:Loc pag.config.idioma_descripcion}" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,12"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="comboIdioma" Width="240" SelectionChanged="Idioma_Changed">
+                            <ComboBoxItem Tag="es">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Recursos/espanol.ico" Width="22" Height="22" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased"/>
+                                    <TextBlock Text="Español" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ComboBoxItem>
+                            <ComboBoxItem Tag="en">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Source="/Recursos/english.ico" Width="22" Height="22" Margin="0,0,10,0" RenderOptions.BitmapScalingMode="HighQuality" RenderOptions.EdgeMode="Aliased"/>
+                                    <TextBlock Text="English" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Loc pag.config.api}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="VirusTotal" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <PasswordBox Grid.Row="0" Grid.Column="1" x:Name="pwdVt" Margin="0,4"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="virustotal.com → API Key (gratuita disponible)" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="AbuseIPDB" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <PasswordBox Grid.Row="2" Grid.Column="1" x:Name="pwdAbuse" Margin="0,4"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="abuseipdb.com → My Account → API" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="AlienVault OTX" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <PasswordBox Grid.Row="4" Grid.Column="1" x:Name="pwdOtx" Margin="0,4"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="otx.alienvault.com → Settings → API Integration" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="abuse.ch / MalwareBazaar" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <PasswordBox Grid.Row="6" Grid.Column="1" x:Name="pwdMb" Margin="0,4"/>
+                        <TextBlock Grid.Row="7" Grid.Column="1" Text="auth.abuse.ch → Auth-Key (registro gratuito · subida y lookup)" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" Margin="0,0,0,8"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Loc pag.config.rutas}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Ghidra" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <TextBox Grid.Row="0" Grid.Column="1" x:Name="campoGhidra" Margin="0,4,8,4"/>
+                        <Button Grid.Row="0" Grid.Column="2" Content="..." Style="{StaticResource BotonSecundario}" Width="40" Click="BuscarGhidra_Click"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Radare2" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" x:Name="campoR2" Margin="0,4,8,4"/>
+                        <Button Grid.Row="1" Grid.Column="2" Content="..." Style="{StaticResource BotonSecundario}" Width="40" Click="BuscarR2_Click"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Loc pag.config.reglas_yara}" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center" Margin="0,8"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" x:Name="campoYara" Margin="0,4,8,4"/>
+                        <Button Grid.Row="2" Grid.Column="2" Content="..." Style="{StaticResource BotonSecundario}" Width="40" Click="BuscarYara_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Loc pag.config.sandbox}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                    <CheckBox x:Name="chkSandbox" Content="{loc:Loc pag.config.sandbox_aislada}" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                    <CheckBox x:Name="chkEnviarVt" Content="{loc:Loc pag.config.enviar_vt}" Foreground="{StaticResource ColorTexto}" Margin="0,4"/>
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="180"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{loc:Loc pag.config.timeout}" Style="{StaticResource EtiquetaCampo}" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" x:Name="campoTimeout" Width="120" HorizontalAlignment="Left"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource EstiloTarjeta}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Loc pag.config.almacenamiento}" FontWeight="SemiBold" FontSize="14" Foreground="{StaticResource ColorAcento}" Margin="0,0,0,12"/>
+                    <TextBlock Text="{loc:Loc pag.config.dir_datos}" Style="{StaticResource EtiquetaCampo}"/>
+                    <TextBlock x:Name="textoDirDatos" FontFamily="Cascadia Mono" Foreground="{StaticResource ColorTexto}" Margin="0,4,0,8"/>
+                    <TextBlock Text="{loc:Loc pag.config.bd}" Style="{StaticResource EtiquetaCampo}"/>
+                    <TextBlock x:Name="textoBd" FontFamily="Cascadia Mono" Foreground="{StaticResource ColorTexto}" Margin="0,4,0,8"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Content="{loc:Loc pag.config.abrir_dir_datos}" Style="{StaticResource BotonSecundario}" Margin="0,0,8,0" Click="AbrirDirDatos_Click"/>
+                        <Button Content="{loc:Loc pag.config.abrir_dir_reportes}" Style="{StaticResource BotonSecundario}" Click="AbrirDirReportes_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <Button Content="{loc:Loc btn.guardar_cambios}" Style="{StaticResource BotonPrimario}" Click="Guardar_Click" Margin="0,0,8,0"/>
+                <Button Content="{loc:Loc btn.restablecer}" Style="{StaticResource BotonPeligro}" Click="Restablecer_Click"/>
+                <TextBlock x:Name="textoEstadoCfg" Foreground="{StaticResource ColorTextoTenue}" VerticalAlignment="Center" Margin="16,0,0,0"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

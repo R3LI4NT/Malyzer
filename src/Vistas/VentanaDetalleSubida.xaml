@@ -1,0 +1,128 @@
+<Window x:Class="Malyzer.Vistas.VentanaDetalleSubida"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:Malyzer.Servicios"
+        Title="Malyzer · Detalle de subida"
+        Width="900" Height="640"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource ColorBase}"
+        Foreground="{DynamicResource ColorTexto}"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        AllowsTransparency="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Barra de título: arrastrable + doble click maximiza/restaura -->
+        <Border Grid.Row="0" Background="{DynamicResource ColorPanel}" BorderBrush="{DynamicResource ColorBorde}" BorderThickness="0,0,0,1" Padding="20,8,8,8"
+                MouseLeftButtonDown="Barra_Drag">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Detalle de subida" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource ColorAcento}"/>
+                    <TextBlock x:Name="textoServicio" Margin="12,0,0,0" Foreground="{DynamicResource ColorTextoSecundario}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- Minimizar -->
+                    <Button x:Name="btnMin" ToolTip="Minimizar" Width="36" Height="28" Background="Transparent" BorderThickness="0"
+                            Foreground="{DynamicResource ColorTexto}" Click="Minimizar_Click" Cursor="Hand">
+                        <Path Data="M0,7 L12,7 L12,9 L0,9 Z" Fill="{DynamicResource ColorTexto}" Width="12" Height="12" Stretch="None" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+                    </Button>
+                    <!-- Maximizar / Restaurar -->
+                    <Button x:Name="btnMax" ToolTip="Maximizar" Width="36" Height="28" Background="Transparent" BorderThickness="0"
+                            Foreground="{DynamicResource ColorTexto}" Click="MaxRestaurar_Click" Cursor="Hand">
+                        <Path x:Name="iconoMax" Data="M0,0 L12,0 L12,12 L0,12 Z M1,1 L1,11 L11,11 L11,1 Z" Fill="{DynamicResource ColorTexto}" Width="12" Height="12" Stretch="None" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    </Button>
+                    <!-- Cerrar -->
+                    <Button x:Name="btnClose" ToolTip="Cerrar" Width="36" Height="28" Background="Transparent" BorderThickness="0"
+                            Foreground="{DynamicResource ColorTexto}" FontSize="14" Click="Cerrar_Click" Cursor="Hand"
+                            Content="✕"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Resumen -->
+        <Border Grid.Row="1" Background="{DynamicResource ColorPanel}" Padding="20,16" Margin="20,16,20,0" CornerRadius="8" BorderThickness="1" BorderBrush="{DynamicResource ColorBorde}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock x:Name="textoEstado" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock x:Name="textoMensaje" Foreground="{DynamicResource ColorTextoSecundario}" Margin="0,4,0,0" TextWrapping="Wrap"/>
+                    <TextBlock x:Name="textoHash" FontFamily="Cascadia Mono" FontSize="11" Foreground="{DynamicResource ColorTextoTenue}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="20,0,0,0">
+                    <TextBlock x:Name="textoRatio" FontSize="36" FontWeight="Bold" HorizontalAlignment="Right"/>
+                    <TextBlock Text="detecciones maliciosas" FontSize="11" Foreground="{DynamicResource ColorTextoTenue}" HorizontalAlignment="Right"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Lista de motores AV -->
+        <Grid Grid.Row="2" Margin="20,16,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="Resultados por motor antivirus" FontWeight="SemiBold" FontSize="14" Foreground="{DynamicResource ColorAcento}" Margin="0,0,0,8"/>
+
+            <!-- Filtros -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                <TextBox x:Name="campoBuscar" Width="280" Tag="Buscar motor o detección..." TextChanged="Filtrar"/>
+                <Border Margin="12,0,0,0"/>
+                <CheckBox x:Name="chkSoloMaliciosos" Content="Solo maliciosos/sospechosos" Foreground="{DynamicResource ColorTexto}" VerticalAlignment="Center" Margin="0,0,8,0" Click="Filtrar"/>
+            </StackPanel>
+
+            <DataGrid Grid.Row="2" x:Name="gridAv" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="None"
+                      Background="{DynamicResource ColorBase}" Foreground="{DynamicResource ColorTexto}"
+                      BorderBrush="{DynamicResource ColorBorde}" RowBackground="Transparent"
+                      AlternatingRowBackground="#08FFFFFF" HeadersVisibility="Column" RowHeight="32">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="" Width="50">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding ColorCategoria, Mode=OneWay}" Width="14" Height="14" CornerRadius="3" Margin="14,0,0,0" VerticalAlignment="Center"
+                                        ToolTip="{Binding Categoria, Mode=OneWay}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Motor" Binding="{Binding Motor, Mode=OneWay}" Width="200"/>
+                    <DataGridTextColumn Header="Categoría" Binding="{Binding CategoriaDisplay, Mode=OneWay}" Width="130"/>
+                    <DataGridTextColumn Header="Detección" Binding="{Binding ResultadoDisplay, Mode=OneWay}" Width="*"/>
+                    <DataGridTextColumn Header="Versión" Binding="{Binding VersionMotor, Mode=OneWay}" Width="110"/>
+                    <DataGridTextColumn Header="Actualizado" Binding="{Binding FechaActualizacion, Mode=OneWay}" Width="110"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="3" Background="{DynamicResource ColorPanel}" BorderBrush="{DynamicResource ColorBorde}" BorderThickness="0,1,0,0" Padding="20,12" Margin="0,16,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="textoLeyenda" Foreground="{DynamicResource ColorTextoSecundario}" FontSize="11"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="botonAbrirVt" Content="Abrir reporte completo en VirusTotal" Style="{DynamicResource BotonSecundario}" Click="AbrirReporte_Click" Margin="0,0,8,0"/>
+                    <Button Content="Cerrar" Style="{DynamicResource BotonSecundario}" Click="Cerrar_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

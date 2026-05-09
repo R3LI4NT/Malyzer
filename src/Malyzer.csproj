@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Malyzer</RootNamespace>
+    <AssemblyName>Malyzer</AssemblyName>
+    <ApplicationIcon>Recursos\logo.ico</ApplicationIcon>
+    <StartupObject>Malyzer.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.4" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="dnlib" Version="4.4.0" />
+    <PackageReference Include="PeNet" Version="4.0.4" />
+    <PackageReference Include="SharpPcap" Version="6.3.0" />
+    <PackageReference Include="PacketDotNet" Version="1.4.7" />
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <PackageReference Include="QuestPDF" Version="2024.10.3" />
+    <PackageReference Include="Gee.External.Capstone" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Recursos\plugin-ejemplo\**\*.cs" />
+    <None Remove="Recursos\plugin-ejemplo\**\*" />
+    <None Include="Recursos\plugin-ejemplo\**\*">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Include="Recursos\reglas_ejemplo.yar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Resource Include="Recursos\logo.png" />
+    <Resource Include="Recursos\logo_64.png" />
+    <Resource Include="Recursos\logo_256.png" />
+    <Resource Include="Recursos\logo.ico" />
+    <Resource Include="Recursos\espanol.ico" />
+    <Resource Include="Recursos\english.ico" />
+    <None Include="Recursos\logo.png" Link="Recursos\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Recursos\logo_256.png" Link="Recursos\logo_256.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

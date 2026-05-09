@@ -1,0 +1,269 @@
+<Window x:Class="Malyzer.VentanaPrincipal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        xmlns:loc="clr-namespace:Malyzer"
+        xmlns:vistas="clr-namespace:Malyzer.Vistas"
+        Title="Malyzer · Malware Analyzer"
+        Icon="/Recursos/logo.ico"
+        Height="820" Width="1380"
+        MinHeight="640" MinWidth="1100"
+        WindowStartupLocation="CenterScreen"
+        Style="{StaticResource EstiloVentana}"
+        Background="{StaticResource ColorBase}">
+
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome
+            CaptionHeight="40"
+            CornerRadius="0"
+            GlassFrameThickness="0"
+            ResizeBorderThickness="6"
+            UseAeroCaptionButtons="False"/>
+    </shell:WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style x:Key="BotonControlVentana" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource ColorTextoSecundario}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="44"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="borde" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="borde" Property="Background" Value="{StaticResource ColorSuperficie1}"/>
+                                <Setter Property="Foreground" Value="{StaticResource ColorTexto}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="contenedorRaiz" BorderBrush="{StaticResource ColorAcento}" BorderThickness="1" CornerRadius="0">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding WindowState, RelativeSource={RelativeSource AncestorType=Window}}" Value="Maximized">
+                        <Setter Property="Margin" Value="7"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="28"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{StaticResource ColorCrust}" BorderBrush="{StaticResource ColorAcento}" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                        <Image Source="/Recursos/logo_64.png" Width="22" Height="22" Margin="0,0,8,0" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        <TextBlock Text="MALYZER" Foreground="{StaticResource ColorAcento}" FontWeight="Bold" FontSize="13" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="·" Foreground="{StaticResource ColorTextoTenue}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Malware Analyzer" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                        <Button Style="{StaticResource BotonControlVentana}" Click="Minimizar_Click">
+                            <Path Data="M0,0 L10,0" Stroke="{StaticResource ColorTexto}" StrokeThickness="1.2" Width="10" Height="10" Stretch="None" SnapsToDevicePixels="True"/>
+                        </Button>
+                        <Button Style="{StaticResource BotonControlVentana}" Click="Maximizar_Click">
+                            <Path Data="M0,0 L10,0 L10,10 L0,10 Z" Stroke="{StaticResource ColorTexto}" StrokeThickness="1.2" Fill="Transparent" Width="10" Height="10" Stretch="None"/>
+                        </Button>
+                        <Button Style="{StaticResource BotonControlVentana}" Click="Cerrar_Click">
+                            <Button.Resources>
+                                <Style TargetType="Button" BasedOn="{StaticResource BotonControlVentana}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{StaticResource ColorRojo}"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Resources>
+                            <Path Data="M0,0 L10,10 M10,0 L0,10" Stroke="{StaticResource ColorTexto}" StrokeThickness="1.2" Width="10" Height="10" Stretch="None"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="240"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="{StaticResource GradienteSidebar}" BorderBrush="{StaticResource ColorBorde}" BorderThickness="0,0,1,0">
+                    <DockPanel>
+                        <Border DockPanel.Dock="Top" Padding="0,16,0,8" BorderBrush="{StaticResource ColorBorde}" BorderThickness="0,0,0,1" Margin="0,0,0,12">
+                            <StackPanel HorizontalAlignment="Center">
+                                <Image Source="/Recursos/logo_256.png" Width="92" Height="92" RenderOptions.BitmapScalingMode="HighQuality">
+                                    <Image.Effect>
+                                        <DropShadowEffect Color="#E11D2E" BlurRadius="20" ShadowDepth="0" Opacity="0.7"/>
+                                    </Image.Effect>
+                                </Image>
+                                <TextBlock Text="MALYZER" Foreground="{StaticResource ColorAcento}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#E11D2E" BlurRadius="6" ShadowDepth="0" Opacity="0.6"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+                                <TextBlock Text="MALWARE ANALYZER" Foreground="{StaticResource ColorTextoTenue}" FontSize="9" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border DockPanel.Dock="Bottom" Padding="12,8,12,12">
+                            <StackPanel>
+                                <Border Height="1" Background="{StaticResource ColorBorde}" Margin="6,0,6,8"/>
+                                <RadioButton x:Name="navConfig" Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="config">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoConfig}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.config}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+                        </Border>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="0,0,0,8">
+                                <RadioButton x:Name="navInicio" Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" IsChecked="True" Checked="Navegar_Checked" Tag="inicio">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoInicio}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.inicio}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <TextBlock Text="{loc:Loc nav.grupo.analisis}" FontSize="10" Foreground="{StaticResource ColorAcento}" FontWeight="Bold" Margin="20,16,0,6" Opacity="0.7"/>
+
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="estatico">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoEstatico}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.estatico}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="dinamico">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoDinamico}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.dinamico}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="pro">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoPro}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.pro}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <TextBlock Text="{loc:Loc nav.grupo.inteligencia}" FontSize="10" Foreground="{StaticResource ColorAcento}" FontWeight="Bold" Margin="20,16,0,6" Opacity="0.7"/>
+
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="intel">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoIntel}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.intel}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="ml">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoML}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.ml}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="visual">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoVisualizacion}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.visual}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <TextBlock Text="{loc:Loc nav.grupo.gestion}" FontSize="10" Foreground="{StaticResource ColorAcento}" FontWeight="Bold" Margin="20,16,0,6" Opacity="0.7"/>
+
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="muestras">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoMuestras}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.muestras}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="urlscan">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoUrlScan}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.urlscan}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="advanced">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoCpu}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.advanced}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <TextBlock Text="{loc:Loc nav.grupo.monitoreo}" FontSize="10" Foreground="{StaticResource ColorAcento}" FontWeight="Bold" Margin="20,16,0,6" Opacity="0.7"/>
+
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="sistema">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoSistema}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.sistema}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                                <RadioButton Style="{StaticResource BotonNavegacionRadio}" GroupName="Navegacion" Checked="Navegar_Checked" Tag="netsniff">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Path Data="{StaticResource IconoNetsniff}" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}" Width="18" Height="18" Stretch="Uniform" Margin="0,0,12,0"/>
+                                        <TextBlock Text="{loc:Loc nav.netsniff}" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </RadioButton>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+
+                <Frame x:Name="marcoContenido" Grid.Column="1" NavigationUIVisibility="Hidden" Background="{StaticResource GradienteFondo}"/>
+            </Grid>
+
+            <Border Grid.Row="2" Background="{StaticResource ColorCrust}" BorderBrush="{StaticResource ColorAcento}" BorderThickness="0,1,0,0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0">
+                        <Ellipse x:Name="indicadorLed" Width="8" Height="8" Fill="{StaticResource ColorVerde}" Margin="0,0,6,0">
+                            <Ellipse.Effect>
+                                <DropShadowEffect Color="#22C55E" BlurRadius="8" ShadowDepth="0" Opacity="0.9"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+                        <TextBlock x:Name="indicadorEstado" Text="{loc:Loc estado.listo}" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock x:Name="indicadorMensaje" Grid.Column="1" Text="" Foreground="{StaticResource ColorTextoTenue}" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                        <TextBlock Foreground="{StaticResource ColorTextoTenue}" FontSize="11" VerticalAlignment="Center">
+                            <Run Text="Developer: "/>
+                            <Hyperlink x:Name="enlaceDev" Click="EnlaceDev_Click" Foreground="{StaticResource ColorAcento}" TextDecorations="None" Cursor="Hand">
+                                <Run Text="R3LI4NT" FontWeight="SemiBold"/>
+                            </Hyperlink>
+                        </TextBlock>
+                        <TextBlock Text="·" Foreground="{StaticResource ColorTextoTenue}" Margin="8,0" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="indicadorMuestras" Text="0" Foreground="{StaticResource ColorTextoSecundario}" FontSize="11" VerticalAlignment="Center"/>
+                        <TextBlock Text="·" Foreground="{StaticResource ColorTextoTenue}" Margin="8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="v1.0.0" Foreground="{StaticResource ColorAcento}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
