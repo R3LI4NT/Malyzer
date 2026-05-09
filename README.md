@@ -745,7 +745,7 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 
 ## 🗺️ Roadmap
 
-### v1.0 · Lanzamiento inicial ✅
+### v1.0 ✅
 
 - [x] Análisis multi-formato (11 tipos: PE, APK, Office, PDF, scripts, JAR…)
 - [x] Análisis estático completo de PE (PeNet + dnlib)
@@ -762,7 +762,7 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 - [x] ETW dynamic tracing con auto-tracking de hijos
 - [x] Bilingüe ES/EN runtime
 
-### v1.1 · Vectores de phishing modernos + subida ✅
+### v1.1 ✅
 
 - [x] **Tres formatos nuevos**: LNK (Windows Shortcut), OneNote (.one), Email (EML/MSG)
 - [x] **Authenticode robusto** con `WinVerifyTrust` + chain validation + revocation
@@ -770,7 +770,6 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 - [x] **MalwareBazaar + ThreatFox** integrados en Threat Intel
 - [x] **Subida de muestras** a VirusTotal y MalwareBazaar con polling automático
 - [x] **Modal con detalle por motor AV** (72+ engines de VT con filtros)
-- [x] **Botones Visualizar / Eliminar** por subida en la lista
 - [x] **Exportación PDF** en Threat Intel + Subidas + Multi-formato
 - [x] Fix de cascada de popups WPF en bindings de tipos anónimos
 - [x] Fix de subida a VirusTotal con filenames no-ASCII
