@@ -46,7 +46,7 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
 
 ## 🆕 Novedades en v1.1
 
-> Lanzamiento centrado en **vectores de phishing modernos**, **verificación de firmas robusta** y **subida de muestras** a servicios públicos sin salir de la app.
+> Lanzamiento centrado en **vectores de phishing modernos**, **verificación de firmas robusta** y **subida de muestras**.
 
 ### Tres formatos nuevos
 
