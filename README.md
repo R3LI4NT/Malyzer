@@ -31,13 +31,12 @@
 
 ---
 
-## ⚡ TL;DR
-
 Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel, subida de muestras y reportes — sobre **14 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf, LECmd y otras siete utilidades.
 
 <p align="center">
-  <img width="1919" height="1029" alt="malyzer" src="https://github.com/user-attachments/assets/8d15920d-7fd5-430b-9b7e-bba89417083a" />
+  <img width="1912" height="1031" alt="Malyzer" src="https://github.com/user-attachments/assets/774635a7-8800-4d69-98ee-ae796adf3cbc" />
 </p>
+
 
 > [!IMPORTANT]
 > **Uso defensivo únicamente.** Esta herramienta es para análisis e investigación. No incluye capacidades ofensivas ni se distribuye junto a payloads maliciosos. Trabajá siempre en VMs aisladas con snapshots.
