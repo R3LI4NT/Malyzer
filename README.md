@@ -6,7 +6,7 @@
 
 ### Herramienta de análisis de malware **multi-formato** para Windows
 
-*PE · APK · Office · PDF · Scripts · JAR · ELF · Mach-O · todo desde una sola interfaz*
+*PE · APK · Office · PDF · Scripts · JAR · ELF · Mach-O · LNK · OneNote · Email · todo desde una sola interfaz*
 
 <br/>
 
@@ -21,6 +21,7 @@
 <br/>
 
 **[Características](#-características)** ·
+**[Novedades v1.1](#-novedades-en-v11)** ·
 **[Instalación](#-instalación)** ·
 **[Uso](#-uso)** ·
 **[Stack](#%EF%B8%8F-stack-técnico)** ·
@@ -32,7 +33,7 @@
 
 ## ⚡ TL;DR
 
-Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel y reportes — sobre **11 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf y otras siete utilidades.
+Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defensivo — triage, análisis estático profundo, sandbox dinámico, threat intel, subida de muestras y reportes — sobre **14 formatos de archivo** distintos. Pensado para que un analista no tenga que saltar entre PEStudio, CFF Explorer, x64dbg, JADX, oletools, peepdf, LECmd y otras siete utilidades.
 
 <p align="center">
   <img width="1919" height="1029" alt="malyzer" src="https://github.com/user-attachments/assets/8d15920d-7fd5-430b-9b7e-bba89417083a" />
@@ -43,13 +44,37 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
 
 ---
 
+## 🆕 Novedades en v1.1
+
+> Lanzamiento centrado en **vectores de phishing modernos**, **verificación de firmas robusta** y **subida de muestras** a servicios públicos sin salir de la app.
+
+### Tres formatos nuevos
+
+| Formato | Vector | Detecciones |
+|---------|--------|-------------|
+| **`.lnk`** (Windows Shortcut) | #1 en spear-phishing moderno | Parser MS-SHLLINK · LOLBins (powershell, mshta, rundll32, certutil…) · PowerShell encoded · ventanas ocultas · icon spoofing · URLs en argumentos · paths sospechosos en `%TEMP%`/AppData |
+| **`.one`** (Microsoft OneNote) | Vector hot 2023+ | `FileDataStoreObject` embedded · ejecutables/JAR/APK/scripts/HTML · LOLBins en strings · PowerShell encoded |
+| **`.eml` / `.msg`** (Email) | Phishing por email | Headers RFC 5322 + OLE Outlook · SPF/DKIM/DMARC · From vs Reply-To mismatch · doble extensión · RTL override (U+202E) · URL shorteners · IPs literales · ISO/IMG/VHD evade-MOTW |
+
+### Otras novedades destacadas
+
+- 🔐 **Authenticode robusto** — Verificación con `WinVerifyTrust` + chain validation + revocation. Pestaña dedicada **"Firma digital"** en Análisis estático con sujeto, emisor, vencimiento, huella SHA-1, algoritmo y resultado de verificación binaria.
+- 🏷️ **Rich Header parser** — Decodifica los metadatos del compilador (`productID`/`build`) escondidos entre el DOS stub y el PE header. Tabla de mapeo Visual Studio 2003-2022. Útil para *attribution* y para detectar binarios stripped/manipulados.
+- 🔬 **MalwareBazaar + ThreatFox** integrados — Dos nuevas fuentes de **abuse.ch** en Threat Intel. Lookup de hashes con familia y reglas YARA matcheadas, IOCs estructurados con familia y nivel de confianza.
+- 📤 **Subida de muestras** — Tab nueva en Threat Intel para enviar muestras a **VirusTotal** y **MalwareBazaar** sin salir de la app. Soporta tags, comentario, modo público/privado, polling automático y detección de duplicados (devuelve el reporte directamente sin re-subir).
+- 👁️ **Visualización de detecciones por motor AV** — Cada subida tiene un botón con icono de ojo que abre un modal con los **72+ motores antivirus** de VirusTotal y su veredicto individual (categoría, detección, versión, fecha de actualización), con filtros de búsqueda y "solo maliciosos".
+- 📄 **Más exportación PDF** — Threat Intel (lookup), Subidas y Multi-formato ahora se pueden exportar como reporte PDF estilizado.
+- 🐛 **Fix de cascada de popups WPF** — corregido un bug donde un binding TwoWay sobre un tipo anónimo lanzaba 10+ MessageBoxes en cascada al renderizar las listas de IOCs y subidas.
+
+---
+
 ## 📊 De un vistazo
 
 | | |
 |---:|:---|
-| **Formatos soportados** | **11** — PE, APK, OOXML, OLE, PDF, scripts, JAR, ELF, Mach-O, ZIP, binarios |
+| **Formatos soportados** | **14** — PE, APK, OOXML, OLE, PDF, scripts, JAR, ELF, Mach-O, ZIP, **LNK**, **OneNote**, **Email**, binarios |
 | **Módulos UI** | **13** páginas funcionales con sidebar y navegación |
-| **Servicios** | **21+** servicios autocontenidos en `Servicios/` |
+| **Servicios** | **25+** servicios autocontenidos en `Servicios/` |
 | **Técnicas MITRE** | **26** sobre 9 tácticas, mapeo automático |
 | **Reglas YARA** | **10** built-in + soporte de reglas externas `.yar` |
 | **Strings i18n** | **1.000+** (ES/EN, cambio en runtime sin reiniciar) |
@@ -60,12 +85,14 @@ Malyzer integra **13 módulos** que cubren el ciclo completo de análisis defens
 ## 📋 Tabla de contenidos
 
 - [Por qué Malyzer](#-por-qué-malyzer)
+- [Novedades v1.1](#-novedades-en-v11)
 - [Características](#-características)
-  - [Análisis multi-formato](#-análisis-multi-formato)
+  - [Análisis multi-formato](#%EF%B8%8F-análisis-multi-formato)
   - [Análisis estático profundo](#-análisis-estático-profundo-pe)
   - [Análisis dinámico con ETW](#-análisis-dinámico-con-etw)
   - [Inteligencia avanzada](#-inteligencia-avanzada)
   - [Threat intelligence](#-threat-intelligence)
+  - [Subida de muestras](#-subida-de-muestras)
   - [Visualización y gestión](#-visualización-y-gestión)
 - [Instalación](#-instalación)
 - [Uso](#-uso)
@@ -87,18 +114,24 @@ Cuando llega una muestra desconocida a tu laboratorio, el flujo típico requiere
 
 | Necesidad | Workflow tradicional | Con Malyzer |
 |-----------|---------------------|-------------|
-| Identificar el formato del binario | `file`, magic bytes manuales | ✅ Auto-detección por magic bytes (11 formatos) |
+| Identificar el formato del binario | `file`, magic bytes manuales | ✅ Auto-detección por magic bytes (14 formatos) |
 | Análisis estático de PE | PEStudio + CFF Explorer + Detect It Easy | ✅ Integrado con scoring |
+| Verificar firma Authenticode | `signtool` + inspección manual | ✅ `WinVerifyTrust` + cadena + revocación |
+| Identificar el compilador del PE | Manual inspección Rich Header | ✅ Rich Header parser con tabla VS 2003-2022 |
 | Análisis de APK Android | JADX + apktool + análisis manual de permisos | ✅ Categorización automática de permisos peligrosos |
 | Análisis de Office maldoc | oletools + olevba + manual | ✅ OOXML + OLE + macros + URLs externos |
 | Análisis de PDF malicioso | peepdf + pdfid | ✅ JavaScript, OpenAction, embedded files |
 | Análisis de scripts | Lectura manual + deobfuscación | ✅ PowerShell/VBS/JS/Python con detección de IOCs |
+| Análisis de LNK weaponizado | LECmd + inspección manual | ✅ Parser MS-SHLLINK + detección de LOLBins |
+| Análisis de OneNote malicioso | Inspección manual del blob | ✅ Detector automático de embedded executables |
+| Análisis de email phishing | Lectura manual de headers + oletools | ✅ SPF/DKIM/DMARC + dominio mismatch + RTL override |
 | Reglas YARA | `yara.exe` + scripts | ✅ Motor embebido + 10 reglas built-in |
 | Mapeo MITRE ATT&CK | Cheatsheet + manual | ✅ Automático sobre IOCs/imports/YARA |
 | Disassembly para detectar obfuscación | IDA / Ghidra / Binary Ninja | ✅ Capstone integrado en `.text` |
 | Sandbox dinámico | Cuckoo / VMRay | ✅ Sandbox local + ETW kernel tracing |
-| Threat intelligence | VT web + AbuseIPDB + scripts | ✅ VT + AbuseIPDB + OTX integrados |
-| Reportes| Word/Markdown manual | ✅ PDF estilizado, bilingüe automático |
+| Threat intelligence | VT web + AbuseIPDB + scripts | ✅ VT + AbuseIPDB + OTX + MalwareBazaar + ThreatFox |
+| Subida de muestras a VT/MB | Web manual con drag & drop | ✅ Tab integrada con polling y detección de duplicados |
+| Reportes | Word/Markdown manual | ✅ PDF estilizado, bilingüe automático |
 
 ---
 
@@ -120,7 +153,12 @@ El **dispatcher** detecta el tipo de archivo por magic bytes y delega al analiza
 | **Linux ELF** | `AnalizadorPe` (genérico) | Headers, secciones, strings, IOCs |
 | **macOS Mach-O** | Genérico | Strings, IOCs, hashes |
 | **ZIP genérico** | Genérico | Inspección de contenidos |
+| **Windows Shortcut** (LNK) ⭐ | `AnalizadorLnk` | Parser MS-SHLLINK · LOLBins · PowerShell encoded · icon spoofing · URLs en argumentos |
+| **Microsoft OneNote** (.one) ⭐ | `AnalizadorOneNote` | `FileDataStoreObject` embedded · ejecutables/scripts/HTML |
+| **Email** (EML/MSG) ⭐ | `AnalizadorEmail` | Headers RFC 5322 · SPF/DKIM/DMARC · From mismatch · doble extensión · RTL override |
 | **Binario desconocido** | `AnalizadorGenerico` | Hashes, entropía, strings, IOCs por regex |
+
+⭐ Formatos nuevos en v1.1
 
 > [!TIP]
 > Cada analizador alimenta un modelo común `ResultadoMultiFormato` con `Indicadores` (severidad alta/media/baja), `Strings`, `Metadata` y un `Veredicto` calculado: **Limpio · Bajo riesgo · Sospechoso · Probablemente malicioso**.
@@ -138,6 +176,8 @@ Inspección exhaustiva basada en `PeNet 4.0.4` y `dnlib 4.4.0`:
 - ⚖️ **Veredicto automático** con score 0-100
 - 🏗️ **Análisis .NET** con `dnlib`: ensamblados managed, types, methods
 - 🚨 **Detección de funciones API sospechosas**: `VirtualAllocEx`, `WriteProcessMemory`, `CreateRemoteThread`, etc.
+- 🆕 **Authenticode robusto** (v1.1) — Verificación con `WinVerifyTrust` + chain + revocation. Pestaña dedicada con sujeto, emisor, vencimiento, huella SHA-1, número de serie, algoritmo y chequeos detallados (autofirmado, vencido, cadena válida, etc.)
+- 🆕 **Rich Header parser** (v1.1) — Decodifica los metadatos escondidos del compilador con tabla de mapeo `productID` → producto Visual Studio (2003 hasta 2022). DataGrid con productID, nombre, build number y count
 
 ### 📡 Análisis dinámico con ETW
 
@@ -202,14 +242,39 @@ Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con
 
 | Servicio | Cobertura | Tier gratuito |
 |----------|-----------|---------------|
-| **VirusTotal v3** | Hashes, dominios, URLs · 90+ AV engines | 4 req/min, 500/día |
+| **VirusTotal v3** | Hashes, dominios, URLs · 90+ AV engines · subida | 4 req/min, 500/día |
 | **AbuseIPDB v2** | Reputación de IPs | 1.000 req/día |
 | **AlienVault OTX** | Hashes y dominios contra pulsos | sin límite práctico |
+| **MalwareBazaar** ⭐ | Lookup de hashes con familia + reglas YARA matcheadas · subida | registro gratuito en auth.abuse.ch |
+| **ThreatFox** ⭐ | IOCs estructurados con familia y nivel de confianza | misma key que MalwareBazaar |
 | **URLhaus** | URLs maliciosas conocidas | público |
 | **PhishTank** | URLs de phishing reportadas | público |
 | **Heurísticas locales** | TLDs sospechosos, palabras de phishing, IPs literales, URL-encoding excesivo | offline |
 
+⭐ Fuentes nuevas en v1.1
+
 **Auto-detección del tipo de IOC** (hash MD5/SHA-1/SHA-256, IP, dominio o URL) y consultas en lote.
+
+### 📤 Subida de muestras
+
+> Nuevo en v1.1.
+
+Tab nueva en **Inteligencia → Subir muestra** que permite enviar muestras a servicios públicos sin salir de la app:
+
+| Funcionalidad | Detalle |
+|---|---|
+| **Destinos** | VirusTotal y/o MalwareBazaar (selección múltiple) |
+| **Metadatos** | Tags, comentario, modo público/privado (MalwareBazaar) |
+| **Polling automático** | Espera hasta 90s a que VT termine el análisis |
+| **Detección de duplicados** | Si la muestra ya existe en VT, devuelve el reporte sin re-subir |
+| **Cancelación** | Botón cancelar disponible durante la subida |
+| **Detalle por motor AV** | Botón 👁️ por subida abre modal con los 72+ motores AV de VT y su veredicto individual |
+| **Filtros en el modal** | Búsqueda por nombre de motor o detección · checkbox "Solo maliciosos/sospechosos" |
+| **Eliminar de la lista** | Botón 🗑️ por subida para quitarla del historial |
+| **Exportación PDF** | Reporte estilizado con todas las subidas y sus veredictos |
+
+> [!CAUTION]
+> Subir una muestra a VirusTotal o MalwareBazaar la hace **pública** para la comunidad de threat intel. Solo subí muestras que querés compartir.
 
 ### 📊 Visualización y gestión
 
@@ -218,7 +283,7 @@ Disassembly real de la sección `.text` usando `Gee.External.Capstone 2.3.0` con
 - **🖥️ Inspector de sistema** — Procesos, conexiones TCP/UDP, autorun (registro + carpetas), archivo hosts, software de protección, unidades. Context menus para suspender procesos, bloquear IPs en firewall, comentar hosts maliciosos, etc.
 - **🤖 Clasificador ML** — k-NN con extracción de features (entropía, imports, secciones, strings) y agrupamiento automático del repositorio
 - **🗃️ Repositorio de muestras** — SQLite local con metadata: familia, etiquetas, notas, riesgo, hashes, SSDeep, técnicas MITRE
-- **📄 Exportación PDF** — Templates estilizados con `QuestPDF` para análisis estático, sistema, muestras, netsniff y URL scan. **Bilingüe automático** según idioma activo
+- **📄 Exportación PDF** — Templates estilizados con `QuestPDF` para análisis estático, sistema, muestras, netsniff, URL scan, **threat intel, subidas y multi-formato** (⭐ nuevos en v1.1). **Bilingüe automático** según idioma activo
 
 ---
 
@@ -252,6 +317,19 @@ dotnet build -c Release
 
 O usá el script `compilar.bat` incluido para una compilación rápida.
 
+### Opción 3 · Single-file portable
+
+Para generar un `.exe` autocontenido (sin dependencias externas, podés llevarlo a cualquier Windows):
+
+```powershell
+dotnet publish -c Release -r win-x64 --self-contained true `
+  -p:PublishSingleFile=true `
+  -p:IncludeNativeLibrariesForSelfExtract=true `
+  -p:EnableCompressionInSingleFile=true
+```
+
+El binario queda en `bin\Release\net8.0-windows\win-x64\publish\Malyzer.exe` (~80-110 MB con compresión).
+
 ---
 
 ## 📖 Uso
@@ -268,6 +346,7 @@ O usá el script `compilar.bat` incluido para una compilación rápida.
    - Imports sospechosos (resaltados)
    - IOCs extraídos (URLs, IPs, dominios)
    - Coincidencias YARA
+   - **Tab "Firma digital"** (v1.1) — verificación Authenticode + Rich Header
 5. Exportá un PDF si necesitás compartirlo con el equipo
 
 </details>
@@ -290,6 +369,52 @@ Ejemplo de detecciones críticas:
 - `SYSTEM_ALERT_WINDOW` → overlay banker
 - `BIND_DEVICE_ADMIN` → ransomware Android
 - `REQUEST_INSTALL_PACKAGES` → dropper de APKs adicionales
+
+</details>
+
+<details>
+<summary><b>🔗 Análisis de un LNK weaponizado</b></summary>
+
+> Nuevo en v1.1.
+
+1. **Inteligencia avanzada** → **Multi-formato** → **Examinar** → seleccioná el `.lnk`
+2. **Analizar**
+3. Revisá:
+   - **Veredicto** (score 0-100) basado en LOLBins, PowerShell encoded, ventanas ocultas, etc.
+   - **Indicadores** con severidad (alta/media/baja) y descripción
+   - **Strings** relevantes del payload
+   - **Metadatos** del shortcut (target, args, working directory, icon location)
+4. Exportá PDF con el botón **Exportar PDF**
+
+Detecciones típicas en LNK weaponizados:
+- Target apunta a `powershell.exe`, `mshta.exe`, `rundll32.exe`, `certutil.exe`, etc.
+- Argumentos con `-EncodedCommand` (Base64) o URLs HTTP/HTTPS
+- `WindowStyle=Hidden` para ejecución silenciosa
+- Icon de Word/PDF/Excel pero target ejecuta script
+- Working directory en `%TEMP%`, `%APPDATA%` o paths de redes SMB
+
+</details>
+
+<details>
+<summary><b>📧 Análisis de email phishing</b></summary>
+
+> Nuevo en v1.1.
+
+1. **Inteligencia avanzada** → **Multi-formato** → **Examinar** → seleccioná el `.eml` o `.msg`
+2. **Analizar**
+3. Revisá:
+   - **Headers críticos** — From, Reply-To, Return-Path (con detección de mismatch)
+   - **Authentication-Results** — SPF/DKIM/DMARC (rojo si fail)
+   - **Attachments** — doble extensión, RTL override (U+202E), tipos peligrosos (ISO/IMG/VHD que evaden MOTW)
+   - **URLs** — shorteners, IPs literales, mismatch entre texto y href
+   - **Indicadores** con severidad
+
+Ejemplo de detecciones:
+- `From: support@paypa1.com` (typosquatting)
+- `Reply-To: attacker@evil.tk` ≠ `From`
+- `SPF=fail` + `DKIM=none` + `DMARC=fail`
+- Adjunto `factura.pdf‮exe.zip` (RTL override esconde la extensión real)
+- URL `https://bit.ly/3xxxx` que redirige a IP literal
 
 </details>
 
@@ -321,6 +446,28 @@ Ejemplo de detecciones críticas:
 </details>
 
 <details>
+<summary><b>📤 Subir una muestra a VirusTotal / MalwareBazaar</b></summary>
+
+> Nuevo en v1.1.
+
+1. **Inteligencia** → tab **Subir muestra**
+2. **Examinar archivo** → seleccioná la muestra
+3. Marcá los destinos (VirusTotal y/o MalwareBazaar)
+4. Opcional para MalwareBazaar: tags (`emotet`, `qakbot`, `apt28`…), comentario, modo público/privado
+5. **Subir muestra**
+6. Si VT no tiene la muestra: subida + polling automático ~30-90s
+7. Si VT ya la tiene: devuelve el reporte instantáneamente
+8. Click en el botón 👁️ de la subida para ver el detalle por motor AV (72+ engines):
+   - Filtrá por nombre de motor o detección
+   - Checkbox "Solo maliciosos/sospechosos"
+   - Botón "Abrir reporte completo en VirusTotal"
+9. Exportá PDF con el botón **Exportar PDF** del tab
+
+> ⚠ Subir una muestra la hace pública. Solo subí muestras que querés compartir con la comunidad.
+
+</details>
+
+<details>
 <summary><b>🌐 Inspeccionar tráfico de red</b></summary>
 
 1. Netsniff → seleccioná adaptador → **Iniciar captura**
@@ -344,9 +491,12 @@ Configuración → **Claves de API**. Todas las APIs son opcionales — la app f
 
 | Servicio | Para qué se usa | Costo |
 |----------|-----------------|-------|
-| **VirusTotal** | Hashes, IPs, dominios, URLs en Threat Intel y URL Scan | Gratis (4 req/min, 500/día) |
+| **VirusTotal** | Hashes, IPs, dominios, URLs en Threat Intel y URL Scan + **subida de muestras** | Gratis (4 req/min, 500/día) |
 | **AbuseIPDB** | Reputación de IPs | Gratis (1.000 req/día) |
 | **AlienVault OTX** | Hashes y dominios contra pulsos de la comunidad | Gratis sin límite práctico |
+| **abuse.ch / MalwareBazaar** ⭐ | Lookup MalwareBazaar/ThreatFox + **subida de muestras** | Gratis · registro en [auth.abuse.ch](https://auth.abuse.ch/) |
+
+⭐ Nuevo en v1.1
 
 ### Idioma
 
@@ -372,23 +522,35 @@ flowchart LR
     C -->|%PDF| H[AnalizadorPdf]
     C -->|.ps1/.vbs/.js/.py| I[AnalizadorScript]
     C -->|PK + JAR| J[AnalizadorJar]
-    C -->|otros| K[AnalizadorGenerico]
+    C -->|4C 00 00 00| K[AnalizadorLnk]
+    C -->|E4 52 5C 7B| L[AnalizadorOneNote]
+    C -->|RFC 5322 / OLE| M[AnalizadorEmail]
+    C -->|otros| N[AnalizadorGenerico]
 
-    D --> L[ResultadoMultiFormato]
-    E --> L
-    F --> L
-    G --> L
-    H --> L
-    I --> L
-    J --> L
-    K --> L
+    D --> O[ResultadoMultiFormato]
+    E --> O
+    F --> O
+    G --> O
+    H --> O
+    I --> O
+    J --> O
+    K --> O
+    L --> O
+    M --> O
+    N --> O
 
-    L --> M[MotorYara]
-    L --> N[MapeadorMitre]
-    L --> O[IntelAmenazas]
-    L --> P[ExportadorPdf]
+    D --> P[AnalizadorAuthenticode]
+    P --> Q[FirmaDigital + RichHeader]
 
-    M & N & O & P --> Q[UI · WPF]
+    O --> R[MotorYara]
+    O --> S[MapeadorMitre]
+    O --> T[IntelAmenazas]
+    O --> U[SubidorMuestras]
+    O --> V[ExportadorPdf]
+
+    T -->|VT/AbuseIPDB/OTX/MalwareBazaar/ThreatFox| W[UI · WPF]
+    U -->|VirusTotal + MalwareBazaar| W
+    R & S & V & Q --> W
 ```
 
 Diseño modular con servicios independientes que pueden testearse y reemplazarse de manera aislada. Cada feature es un servicio que vive en `Servicios/` y se consume desde una página WPF en `Vistas/`.
@@ -416,6 +578,13 @@ Diseño modular con servicios independientes que pueden testearse y reemplazarse
 | `QuestPDF` | 2024.10.3 | Generación de PDFs declarativa |
 | `Newtonsoft.Json` | 13.0.3 | Serialización JSON |
 
+### Integraciones nativas Windows
+
+- **`WinVerifyTrust`** (P/Invoke a `wintrust.dll`) — verificación Authenticode con cadena y revocación
+- **Rich Header parsing** — decodificación XOR del bloque entre DOS stub y PE header
+- **OLE Compound File** — parser propio para `.msg` de Outlook
+- **MS-SHLLINK** — parser propio para `.lnk` (no requiere lib externa)
+
 ### Diseño
 
 - **Paleta**: `#0A0606` base, `#E11D2E` acento, `#F4ECEC` texto
@@ -440,7 +609,7 @@ Malyzer/
 ├── LocExtension.cs                  # Markup extension para i18n
 ├── Malyzer.csproj                   # Proyecto .NET 8 WPF
 │
-├── Servicios/                       # Lógica de negocio (21+ servicios)
+├── Servicios/                       # Lógica de negocio (25+ servicios)
 │   │
 │   ├── # Análisis multi-formato
 │   ├── AnalizadorMultiFormato.cs    # Dispatcher por magic bytes
@@ -448,6 +617,10 @@ Malyzer/
 │   ├── AnalizadorApk.cs             # Análisis APK + permisos peligrosos
 │   ├── AnalizadorEstatico.cs        # Análisis PE detallado
 │   ├── AnalizadorDinamico.cs        # Sandbox local
+│   ├── AnalizadorLnk.cs             # ⭐ v1.1 — Parser MS-SHLLINK + LOLBin detection
+│   ├── AnalizadorOneNote.cs         # ⭐ v1.1 — Detector de embedded executables
+│   ├── AnalizadorEmail.cs           # ⭐ v1.1 — RFC 5322 + OLE Outlook + SPF/DKIM/DMARC
+│   ├── AnalizadorAuthenticode.cs    # ⭐ v1.1 — WinVerifyTrust + Rich Header parser
 │   │
 │   ├── # Inteligencia
 │   ├── MotorYara.cs                 # YARA con 10 reglas built-in
@@ -459,7 +632,8 @@ Malyzer/
 │   ├── ClasificadorML.cs            # k-NN classifier
 │   │
 │   ├── # Threat intelligence
-│   ├── IntelAmenazas.cs             # VT/AbuseIPDB/OTX
+│   ├── IntelAmenazas.cs             # VT/AbuseIPDB/OTX + MalwareBazaar/ThreatFox ⭐ v1.1
+│   ├── SubidorMuestras.cs           # ⭐ v1.1 — Subida a VT + MalwareBazaar
 │   ├── EscanerUrl.cs                # VT + URLhaus + PhishTank
 │   ├── InspectorIp.cs               # GeoIP + RDAP
 │   │
@@ -476,18 +650,19 @@ Malyzer/
 │
 ├── Vistas/                          # Páginas WPF (13 páginas)
 │   ├── PaginaInicio.xaml(.cs)
-│   ├── PaginaAnalisisEstatico.xaml(.cs)
+│   ├── PaginaAnalisisEstatico.xaml(.cs)         # Tab "Firma digital" ⭐ v1.1
 │   ├── PaginaAnalisisDinamico.xaml(.cs)
-│   ├── PaginaInteligencia.xaml(.cs)
-│   ├── PaginaInteligenciaAvanzada.xaml(.cs)   # Diff/MITRE/Decoder/ETW
+│   ├── PaginaInteligencia.xaml(.cs)             # Tabs Lookup + Subir ⭐ v1.1
+│   ├── PaginaInteligenciaAvanzada.xaml(.cs)     # Diff/MITRE/Decoder/ETW + Multi-formato PDF ⭐ v1.1
 │   ├── PaginaMuestras.xaml(.cs)
 │   ├── PaginaClasificacion.xaml(.cs)
 │   ├── PaginaVisualizacion.xaml(.cs)
 │   ├── PaginaHerramientasPro.xaml(.cs)
-│   ├── PaginaConfiguracion.xaml(.cs)
+│   ├── PaginaConfiguracion.xaml(.cs)            # Campo abuse.ch ⭐ v1.1
 │   ├── PaginaSistema.xaml(.cs)
 │   ├── PaginaNetsniff.xaml(.cs)
-│   └── PaginaUrlScan.xaml(.cs)
+│   ├── PaginaUrlScan.xaml(.cs)
+│   └── VentanaDetalleSubida.xaml(.cs)           # ⭐ v1.1 — Modal con detecciones por motor AV
 │
 ├── Estilos/                         # Tema oscuro WPF
 │   ├── Tema.xaml                    # Paleta + tipografía
@@ -495,7 +670,7 @@ Malyzer/
 │   └── Controles.xaml               # Templates de DataGrid/ContextMenu/etc
 │
 ├── Modelos/
-│   └── Modelos.cs                   # POCOs (Muestra, ResultadoAnalisis…)
+│   └── Modelos.cs                   # POCOs (Muestra, ResultadoAnalisis, FirmaDigitalInfo, RichHeaderInfo, ResultadoSubidaMuestra, DeteccionAv…)
 │
 ├── Recursos/                        # Estáticos
 │   ├── logo.png / logo_256.png / logo_64.png
@@ -533,6 +708,7 @@ Malyzer dispara las **mismas heurísticas** que el malware real porque usa mucha
 - 📡 Captura raw de tráfico (`SharpPcap`)
 - 🔍 WMI queries de enumeración del sistema
 - 📝 Lectura de hosts file y modificación del registro
+- 🔐 `WinVerifyTrust` (verificación de firmas Authenticode)
 
 **Esto es esperado y le pasa también a:**
 
@@ -578,7 +754,7 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 {
     ["nav.estatico"] = "Análisis estático",
     ["btn.analizar"] = "Analizar",
-    // ... 500+ entradas
+    // ... 1.000+ entradas
 };
 ```
 
@@ -603,7 +779,37 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 - [x] ETW dynamic tracing con auto-tracking de hijos
 - [x] Bilingüe ES/EN runtime
 
-### v1.1 · Próxima
+### v1.1 · Vectores de phishing modernos + subida ✅
+
+- [x] **Tres formatos nuevos**: LNK (Windows Shortcut), OneNote (.one), Email (EML/MSG)
+- [x] **Authenticode robusto** con `WinVerifyTrust` + chain validation + revocation
+- [x] **Rich Header parser** con tabla de productos VS 2003-2022
+- [x] **MalwareBazaar + ThreatFox** integrados en Threat Intel
+- [x] **Subida de muestras** a VirusTotal y MalwareBazaar con polling automático
+- [x] **Modal con detalle por motor AV** (72+ engines de VT con filtros)
+- [x] **Botones Visualizar / Eliminar** por subida en la lista
+- [x] **Exportación PDF** en Threat Intel + Subidas + Multi-formato
+- [x] Fix de cascada de popups WPF en bindings de tipos anónimos
+- [x] Fix de subida a VirusTotal con filenames no-ASCII
+
+### v1.2 · Próxima
+
+- [ ] **Sigma rules engine** sobre eventos ETW
+- [ ] **YARA rule generator** desde una muestra (como `yarGen`)
+- [ ] **iLSpy embebido** para decompilación .NET en vista integrada
+- [ ] **FakeDNS + FakeNet** local para sandbox sin internet
+- [ ] **Memory string scanning** post-execution con `MiniDumpWriteDump`
+- [ ] **PCAP analyzer** offline (abrir `.pcap` exportado de Wireshark)
+- [ ] **Soporte de RTF, CHM, HTA, XLL, ISO** como nuevos formatos
+
+### v2.0 · Largo plazo
+
+- [ ] **Plugin system** con interfaces `IAnalizadorPlugin` para extensibilidad de terceros
+- [ ] **Export STIX 2.1 / MISP** para integración con plataformas TI
+- [ ] **Windows Sandbox (WSB)** integration para detonación aislada
+- [ ] **Control flow graph (CFG)** con render WPF interactivo
+- [ ] **Sigma → SIEM rules** (Splunk, Elastic, Sentinel)
+- [ ] **Modo CLI headless** para integrarlo en pipelines de CI/CD
 
 ---
 
@@ -613,7 +819,7 @@ private static Dictionary<string, string> DiccionarioPt() => new()
 
 - 🛡️ **Más reglas YARA** en `Servicios/MotorYara.cs`
 - 🎯 **Nuevas técnicas MITRE** en `Servicios/MapeadorMitre.cs`
-- 📄 **Soporte de nuevos formatos** en `AnalizadorPorFormato.cs`
+- 📄 **Soporte de nuevos formatos** en `AnalizadorMultiFormato.cs` (RTF, CHM, HTA, XLL, ISO…)
 - 🌍 **Traducciones** a otros idiomas
 - 🐛 **Fixes de bugs** y mejoras de UX
 - ✨ **Nuevas features** del roadmap
